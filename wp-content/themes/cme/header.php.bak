@@ -1,0 +1,48 @@
+<?php
+/**
+ * Шаблон шапки (header.php)
+ * @package WordPress
+ * @subpackage your-clean-template-3
+ */
+?>
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--<link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/style.css" type="text/css" />-->
+    <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/css/style.min.css" type="text/css" />
+	<?php wp_head(); ?>
+</head>
+<body class="site">
+	<header>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<nav class="navbar navbar-default">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topnav" aria-expanded="false">
+								<span class="sr-only">Меню</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+						</div>
+						<div class="collapse navbar-collapse" id="topnav">
+							<?php $args = array( 
+								'theme_location' => 'top',
+								'container'=> false,
+						  		'menu_id' => 'top-nav-ul',
+						  		'items_wrap' => '<ul id="%1$s" class="nav navbar-nav %2$s">%3$s</ul>',
+								'menu_class' => 'top-menu',
+						  		'walker' => new bootstrap_menu(true)		  		
+					  			);
+								wp_nav_menu($args);
+							?>
+						</div>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</header>
