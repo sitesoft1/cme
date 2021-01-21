@@ -112,7 +112,6 @@
                             </div>
                         </a>
                     </div>
-    
                     <nav class="header__menu menu">
                         <?php
                         // Получим элементы меню на основе параметра $menu_name (тоже что и 'theme_location' или 'menu' в аргументах wp_nav_menu)
@@ -171,55 +170,38 @@
         <main class="site__main">
             <section class="main">
                 <div class="main__slider">
-                    <div class="main__item" style="background: url(<?php echo get_template_directory_uri(); ?>/img/slider/slide-1.jpg) no-repeat right/cover;">
+                    <?php
+                    // Получим записи определенного типа
+                    $posts = get_posts( array(
+                        'numberposts' => -1,
+                        'orderby'     => 'date',
+                        'order'       => 'ASC',
+                        'post_type'   => 'home_slides'
+                    ) );
+                    ?>
+                    <?php
+                    // выведем полученные записи
+                    foreach( $posts as $post ){
+                    $fields = get_fields($post->ID);
+                    ?>
+                    <div class="main__item" style="background: url(<?php echo get_the_post_thumbnail_url( $post->ID, 'full' ); ?>) no-repeat right/cover;">
                         <div class="main__container container">
                             <div class="main__body">
                                 <h1 class="main__title title-h1">
-                                    новая жизнь
-                                    <span>вашего двигателя</span>
+                                    <?php echo $post->post_title; ?>
+                                    <span><?php echo $fields['header_2']; ?></span>
                                 </h1>
-                                <div class="main__option"><span>Переборка двигателя от <strong>10 000</strong> рублей</span>
-                                </div>
-                                <div class="main__option"><span>Ремонт ГБЦ от <strong>1000</strong> рублей</span></div>
-                                <div class="main__option"><span>Ремонт блока цилиндров от <strong>1500</strong> рублей</span>
-                                </div>
-                                <a href="" class="main__btn btn">Подробнее</a>
+                                <?php foreach ($fields['slide_list'] as $slide_item){ ?>
+                                    <div class="main__option"><span><?php echo $slide_item['slide_list_item']; ?></span>
+                                    </div>
+                                <?php } ?>
+                                <a href="<?php echo $fields['home_slide_link']; ?>" class="main__btn btn">Подробнее</a>
                             </div>
                         </div>
                     </div>
-                    <div class="main__item" style="background: url(<?php echo get_template_directory_uri(); ?>/img/slider/slide-2.jpg) no-repeat right/cover;">
-                        <div class="main__container container">
-                            <div class="main__body">
-                                <h1 class="main__title title-h1">
-                                    новая жизнь
-                                    <span>вашего двигателя</span>
-                                </h1>
-                                <div class="main__option"><span>Переборка двигателя от <strong>10 000</strong> рублей</span>
-                                </div>
-                                <div class="main__option"><span>Ремонт ГБЦ от <strong>1000</strong> рублей</span></div>
-                                <div class="main__option"><span>Ремонт блока цилиндров от <strong>1500</strong> рублей</span>
-                                </div>
-                                <a href="" class="main__btn btn">Подробнее</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="main__item" style="background: url(<?php echo get_template_directory_uri(); ?>/img/slider/slide-3.jpg) no-repeat right/cover;">
-                        <div class="main__container container">
-                            <div class="main__body">
-                                <h1 class="main__title title-h1">
-                                    новая жизнь
-                                    <span>вашего двигателя</span>
-                                </h1>
-                                <div class="main__option"><span>Переборка двигателя от <strong>10 000</strong> рублей</span>
-                                </div>
-                                <div class="main__option"><span>Ремонт ГБЦ от <strong>1000</strong> рублей</span></div>
-                                <div class="main__option"><span>Ремонт блока цилиндров от <strong>1500</strong> рублей</span>
-                                </div>
-                                <a href="" class="main__btn btn">Подробнее</a>
-                            </div>
-                        </div>
-                    </div>
+                    <?php } ?>
                 </div>
+                
                 <div class="main__logo">
                     <svg width="294" height="167" viewBox="0 0 294 167" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -330,28 +312,9 @@
                                     <div class="schedule__option main__option">Обслуживание производится только с использованием
                                         современного оборудования.</div>
                                 </div>
-                                <div class="schedule__right" data-da="schedule__footer .container, 0, 860">
-                                    <h2 class="schedule__title">РЕЖИМ РАБОТЫ</h2>
-                                    <div class="schedule__worktime-wrapper">
-                                        <div class="schedule__worktime">
-                                            <div class="schedule__worktime-day">Пн-Пт..............</div>
-                                            <div class="schedule__worktime-clock">09:00 • 19:00</div>
-                                        </div>
-                                        <div class="schedule__worktime">
-                                            <div class="schedule__worktime-day">Сб....................</div>
-                                            <div class="schedule__worktime-clock">10:00 • 16:00</div>
-                                        </div>
-                                        <div class="schedule__worktime">
-                                            <div class="schedule__worktime-day">Вс....................</div>
-                                            <div class="schedule__worktime-clock">Выходной</div>
-                                        </div>
-                                    </div>
-                                    <div class="schedule__support-wrapper">
-                                        <div class="schedule__support">Круглосуточная&nbsp;поддержка по телефону:</div>
-                                        <a href="tel: +79646226464" class="schedule__phone">+7 (964) <span>622-64-64</span></a>
-                                    </div>
-                                    <a href="#appointment" class="schedule__btn btn popup-link">Записаться на осмотр</a>
-                                </div>
+                                
+                                <?php get_sidebar('homeright'); // подключаем sidebar-footersocial.php ?>
+                                
                             </div>
                         </div>
                     </div>
