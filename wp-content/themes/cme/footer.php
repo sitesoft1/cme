@@ -152,23 +152,7 @@
                     </div>
                 </div>
                 <div class="footer__right">
-                    <div class="footer__social social">
-                        <div class="social__item">
-                            <a href="" class="social__link">
-                                <i class="icon-social-1"></i>
-                            </a>
-                        </div>
-                        <div class="social__item">
-                            <a href="" class="social__link">
-                                <i class="icon-social-2"></i>
-                            </a>
-                        </div>
-                        <div class="social__item">
-                            <a href="" class="social__link">
-                                <i class="icon-social-3"></i>
-                            </a>
-                        </div>
-                    </div>
+                    <?php get_sidebar('footersocial'); // подключаем sidebar-footersocial.php ?>
                 </div>
             </div>
         </div>

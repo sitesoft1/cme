@@ -26,6 +26,25 @@ register_sidebar(array(
 	'after_title' => "</span>\n",
 ));
 
+function get_dynamic_sidebar($i = 1) {
+	$c = '';
+	ob_start();
+	dynamic_sidebar($i);
+	$c = ob_get_clean();
+	return $c;
+}
+
+register_sidebar(array( // регистрируем левую колонку, этот кусок можно повторять для добавления новых областей для виджитов
+	'name' => 'Footer Social', // Название в админке
+	'id' => "sidebar-footersocial", // идентификатор для вызова в шаблонах
+	'description' => 'Сылки на соц сети в футере', // Описалово в админке
+	'before_widget' => '', // разметка до вывода каждого виджета
+	'after_widget' => "", // разметка после вывода каждого виджета
+	'before_title' => '', //  разметка до вывода заголовка виджета
+	'after_title' => "", //  разметка после вывода заголовка виджета
+));
+
+
 if (!class_exists('clean_comments_constructor')) {
 	class clean_comments_constructor extends Walker_Comment {
 		public function start_lvl( &$output, $depth = 0, $args = array()) {
