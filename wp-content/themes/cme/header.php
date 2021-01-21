@@ -31,4 +31,7 @@
     </script>
     <!-- Подсветка активного пунтка меню КОНЕЦ -->
 </head>
+<body class="site">
+<!-- .site__wrap START -->
+<div class="site__wrap">
 
