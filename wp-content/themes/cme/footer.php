@@ -102,26 +102,35 @@
                     </a>
                 </div>
                 <nav class="footer__menu menu">
-                    <ul class="footer__list">
-                        <li class="footer__item">
-                            <a href="" class="footer__link">О нас</a>
-                        </li>
-                        <li class="footer__item">
-                            <a href="" class="footer__link">Цены</a>
-                        </li>
-                        <li class="footer__item">
-                            <a href="service.html" class="footer__link">Услуги</a>
-                        </li>
-                        <li class="footer__item">
-                            <a href="feedback.html" class="footer__link">Отзывы</a>
-                        </li>
-                        <li class="footer__item">
-                            <a href="typical.html" class="footer__link">Гарантии</a>
-                        </li>
-                        <li class="footer__item">
-                            <a href="" class="footer__link">Контакты</a>
-                        </li>
-                    </ul>
+    
+                    <?php
+                    // Получим элементы меню на основе параметра $menu_name (тоже что и 'theme_location' или 'menu' в аргументах wp_nav_menu)
+                    // Этот код - основа функции wp_nav_menu, где получается ID меню из слага
+    
+                    $menu_name = 'top';
+                    $locations = get_nav_menu_locations();
+    
+                    if( $locations && isset( $locations[ $menu_name ] ) ){
+        
+                        // получаем элементы меню
+                        $menu_items = wp_get_nav_menu_items( $locations[ $menu_name ] );
+                        //print_r($menu_items);
+        
+                        // создаем список
+                        $menu_list = '<ul class="footer__list">';
+        
+                        foreach ( (array) $menu_items as $key => $menu_item ){
+                            $menu_list .= '<li class="footer__item"><a href="' . $menu_item->url . '" class="footer__link">' . $menu_item->title . '</a></li>';
+                        }
+        
+                        $menu_list .= '</ul>';
+        
+                    }
+                    else {
+                        $menu_list = '<ul><li>Меню "' . $menu_name . '" не определено.</li></ul>';
+                    }
+                    echo $menu_list;
+                    ?>
                 </nav>
             </div>
         </div>
