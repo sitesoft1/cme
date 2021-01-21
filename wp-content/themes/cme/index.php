@@ -303,14 +303,13 @@
                         <div class="schedule__content">
                             <div class="schedule__row row">
                                 <div class="schedule__left">
-                                    <div class="schedule__option main__option">Команда единомышленников-профессионалов с более
-                                        чем 20-ти летним опытом работы в области ремонта двигателей внутреннего сгорания.</div>
-                                    <div class="schedule__option main__option">Индивидуальный подход к ремонту каждого мотора
-                                        позволяет нам достичь уникальных результатов.</div>
-                                    <div class="schedule__option main__option">Гарантия на выполненные работы и запчасти до двух
-                                        лет.</div>
-                                    <div class="schedule__option main__option">Обслуживание производится только с использованием
-                                        современного оборудования.</div>
+                                    <?php
+                                        $post = get_post(53);
+                                        $text_block_list = get_field( 'text_block_list', $post->ID);
+                                    ?>
+                                    <?php foreach ($text_block_list as $text_block_list_item){ ?>
+                                        <div class="schedule__option main__option"><?php echo $text_block_list_item['text_block_list_item'] ?></div>
+                                    <?php } ?>
                                 </div>
                                 
                                 <?php get_sidebar('homeright'); // подключаем sidebar-footersocial.php ?>
@@ -329,25 +328,21 @@
                 <div class="service__container container">
                     <div class="service__row row">
                         <div class="service__content">
-                            <h2 class="service__title">Ремонт двигателя</h2>
-                            <h3 class="service__subtitle">Капитальный ремонт двигателя в Московской области</h3>
+                            <?php
+                            $post = get_post(54);
+                            $text_block_list = get_field( 'text_block_list', $post_id->ID);
+                            $text_block_header_2 = get_field( 'text_block_header_2', $post_id->ID);
+                            $text_block_link = get_field( 'text_block_link', $post_id->ID);
+                            ?>
+                            
+                            <h2 class="service__title"><?php echo $post->post_title; ?></h2>
+                            <h3 class="service__subtitle"><?php echo $text_block_header_2; ?></h3>
                             <ul class="service__options">
-                                <li class="service__item"><span>Диагностика неисправностей двигателя от <strong>500</strong>
-                                    рублей</span></li>
-                                <li class="service__item"><span>Переборка двигателя от <strong>10 000</strong> рублей</span>
-                                </li>
-                                <li class="service__item"><span>Ремонт ГБЦ от <strong>1000</strong> рублей</span></li>
-                                <li class="service__item"><span>Ремонт блока цилиндров от <strong>1500</strong> рублей</span>
-                                </li>
-                                <li class="service__item"><span>Ремонт коленчатого вала от <strong>1000</strong> рублей</span>
-                                </li>
-                                <li class="service__item"><span>Ремонт шатунов от <strong>500</strong> рублей</span></li>
-                                <li class="service__item"><span>Обработка плоскости ГБЦ и блока цилиндров от
-                                    <strong>500</strong> рублей</span></li>
-                                <li class="service__item"><span>Опресовка рубашки охлаждения от <strong>500</strong>
-                                    рублей</span></li>
+                                <?php foreach ($text_block_list as $text_block_list_item){ ?>
+                                <li class="service__item"><span><?php echo $text_block_list_item['text_block_list_item'] ?></span></li>
+                                <?php } ?>
                             </ul>
-                            <a href="" class="service__btn btn">Подробнее</a>
+                            <a href="<?php echo $text_block_link; ?>" class="service__btn btn">Подробнее</a>
                         </div>
                         <div class="service__image"><picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/service/service-1.webp" type="image/webp"><img src="img/service/service-1.png" alt=""></picture></div>
                     </div>
@@ -358,25 +353,20 @@
                 <div class="service__container container">
                     <div class="service__row row">
                         <div class="service__content">
-                            <h2 class="service__title">Станочные операции</h2>
-                            <h3 class="service__subtitle">Станочные операции в CME</h3>
+                            <?php
+                            $post = get_post(55);
+                            $text_block_list = get_field( 'text_block_list', $post_id->ID);
+                            $text_block_header_2 = get_field( 'text_block_header_2', $post_id->ID);
+                            $text_block_link = get_field( 'text_block_link', $post_id->ID);
+                            ?>
+                            <h2 class="service__title"><?php echo $post->post_title; ?></h2>
+                            <h3 class="service__subtitle"><?php echo $text_block_header_2; ?></h3>
                             <ul class="service__options">
-                                <li class="service__item"><span>Расточка и хонингование блока цилиндров от <strong>2000</strong>
-                                    рублей</span></li>
-                                <li class="service__item"><span>Гильзовка блока цилиндров от <strong>2500</strong> рублей</span>
-                                </li>
-                                <li class="service__item"><span>Ремонт постели коленчатого вала от <strong>4000</strong>
-                                    рублей</span></li>
-                                <li class="service__item"><span>Шлифовка коленвала от <strong>2000</strong> рублей</span></li>
-                                <li class="service__item"><span>Полировка шеек коленвала от <strong>500</strong> рублей</span>
-                                </li>
-                                <li class="service__item"><span>Замена втулок распредвала и приводных валов от
-                                    <strong>500</strong> рублей</span></li>
-                                <li class="service__item"><span>Установка футорок от <strong>500</strong> рублей</span></li>
-                                <li class="service__item"><span>Токарные операции от <strong>200</strong> рублей</span></li>
-                                <li class="service__item"><span>Фрезерные операции от <strong>500</strong> рублей</span></li>
+                                <?php foreach ($text_block_list as $text_block_list_item){ ?>
+                                    <li class="service__item"><span><?php echo $text_block_list_item['text_block_list_item'] ?></span></li>
+                                <?php } ?>
                             </ul>
-                            <a href="" class="service__btn btn">Подробнее</a>
+                            <a href="<?php echo $text_block_link; ?>" class="service__btn btn">Подробнее</a>
                         </div>
                         <div class="service__image"><picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/service/service-2.webp" type="image/webp"><img src="img/service/service-2.png" alt=""></picture></div>
                     </div>
@@ -387,24 +377,20 @@
                 <div class="service__container container">
                     <div class="service__row row">
                         <div class="service__content">
-                            <h2 class="service__title">Техобслуживание</h2>
-                            <h3 class="service__subtitle">Думаете где пройти техобслуживание вашего авто? Сделайте это в CME
-                            </h3>
+                            <?php
+                            $post = get_post(56);
+                            $text_block_list = get_field( 'text_block_list', $post_id->ID);
+                            $text_block_header_2 = get_field( 'text_block_header_2', $post_id->ID);
+                            $text_block_link = get_field( 'text_block_link', $post_id->ID);
+                            ?>
+                            <h2 class="service__title"><?php echo $post->post_title; ?></h2>
+                            <h3 class="service__subtitle"><?php echo $text_block_header_2; ?></h3>
                             <ul class="service__options">
-                                <li class="service__item"><span>Замена масла и масляного фильтра в двигателе от
-                                    <strong>500</strong> рублей</span></li>
-                                <li class="service__item"><span>Замена воздушного фильтра двигателя от <strong>100</strong>
-                                    рублей</span></li>
-                                <li class="service__item"><span>Замена топливного фильтра (при его наличии) от
-                                    <strong>500</strong> рублей</span></li>
-                                <li class="service__item"><span>Замена фильтра салона (при его наличии в автомобиле) от
-                                    <strong>300</strong> рублей</span></li>
-                                <li class="service__item"><span>Диагностика подвески, ходовой части, рулевого управления,
-                                    тормозной системы, системы охлаждения от <strong>1000</strong> рублей</span></li>
-                                <li class="service__item"><span>Проверка возможных течей эксплуатационных жидкостей, их
-                                    состояния и, при необходимости, их замена от <strong>1000</strong> рублей</span></li>
+                                <?php foreach ($text_block_list as $text_block_list_item){ ?>
+                                    <li class="service__item"><span><?php echo $text_block_list_item['text_block_list_item'] ?></span></li>
+                                <?php } ?>
                             </ul>
-                            <a href="" class="service__btn btn">Подробнее</a>
+                            <a href="<?php echo $text_block_link; ?>" class="service__btn btn">Подробнее</a>
                         </div>
                         <div class="service__image"><picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/service/service-3.webp" type="image/webp"><img src="img/service/service-3.png" alt=""></picture></div>
                     </div>
@@ -415,26 +401,20 @@
                 <div class="service__container container">
                     <div class="service__row row">
                         <div class="service__content">
-                            <h2 class="service__title">Тюнинг двигателя</h2>
-                            <h3 class="service__subtitle">Тюнинг механической части двигателя в CME</h3>
+                            <?php
+                            $post = get_post(57);
+                            $text_block_list = get_field( 'text_block_list', $post_id->ID);
+                            $text_block_header_2 = get_field( 'text_block_header_2', $post_id->ID);
+                            $text_block_link = get_field( 'text_block_link', $post_id->ID);
+                            ?>
+                            <h2 class="service__title"><?php echo $post->post_title; ?></h2>
+                            <h3 class="service__subtitle"><?php echo $text_block_header_2; ?></h3>
                             <ul class="service__options">
-                                <li class="service__item"><span>Портинг ГБЦ от <strong>5000</strong> рублей</span></li>
-                                <li class="service__item"><span>Перешлифовка распредвала, изменение хода кулачка от <strong>10
-                                        000</strong> рублей</span></li>
-                                <li class="service__item"><span>Переседловка ГБЦ под измененный диаметр клапана от
-                                    <strong>1000</strong> рублей</span></li>
-                                <li class="service__item"><span>Увеличение диаметра цилиндров от <strong>1000</strong>
-                                    рублей</span></li>
-                                <li class="service__item"><span>Полировка шеек коленвала от <strong>500</strong> рублей</span>
-                                </li>
-                                <li class="service__item"><span>Изготовление кованых поршней от <strong>5000</strong>
-                                    рублей</span></li>
-                                <li class="service__item"><span>Изменение хода поршня от <strong>5000</strong> рублей</span>
-                                </li>
-                                <li class="service__item"><span>Изготовление прокладок ГБЦ от <strong>6000</strong>
-                                    рублей</span></li>
+                                <?php foreach ($text_block_list as $text_block_list_item){ ?>
+                                    <li class="service__item"><span><?php echo $text_block_list_item['text_block_list_item'] ?></span></li>
+                                <?php } ?>
                             </ul>
-                            <a href="" class="service__btn btn">Подробнее</a>
+                            <a href="<?php echo $text_block_link; ?>" class="service__btn btn">Подробнее</a>
                         </div>
                         <div class="service__image"><picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/service/service-4.webp" type="image/webp"><img src="img/service/service-4.png" alt=""></picture></div>
                     </div>
