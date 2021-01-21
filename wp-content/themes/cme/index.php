@@ -479,29 +479,7 @@
             </section>
     
             <section class="map">
-                <div class="map__wrapper">
-                    <div class="map__description">
-                        <div class="map__title">как нас найти</div>
-                        <div class="map__details">
-                            <div class="map__contact map__contact--address">
-                                <div class="map__label">Московская область, г. Мытищи,
-                                    1-ый Рупасовский переулок, дом 6</div>
-                            </div>
-                            <div class="map__contact">
-                                <div class="map__label">Телефон:</div>
-                                <a href="tel: +79646226464" class="map__link">+7 (964) 622-64-64</a>
-                            </div>
-                            <div class="map__contact">
-                                <div class="map__label">Email:</div>
-                                <a href="mailto: info@sibtest64.ru" class="map__link">info@sibtest64.ru</a>
-                            </div>
-                        </div>
-                    </div>
-                    <iframe
-                            src="https://yandex.ru/map-widget/v1/?um=constructor%3A7f5d11ac98859351d79181499470f91940e299621331f371d3c8f8b720359010&amp;source=constructor"
-                            width="100%" height="500" frameborder="0"></iframe>
-    
-                </div>
+                <?php get_sidebar('homemap'); // подключаем sidebar-footersocial.php ?>
             </section>
         </main>
         <div class="modals">
