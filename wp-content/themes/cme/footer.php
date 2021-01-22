@@ -10,7 +10,7 @@
         <div class="footer__container container">
             <div class="footer__top-row row">
                 <div class="footer__logo logo">
-                    <a href="" class="logo__link">
+                    <a href="/" class="logo__link">
                         <div class="logo__img">
                             <svg width="92" height="52" viewBox="0 0 92 52" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -152,7 +152,20 @@
                     </div>
                 </div>
                 <div class="footer__right">
-                    <?php get_sidebar('footersocial'); // подключаем sidebar-footersocial.php ?>
+                    <div class="footer__social social">
+                        <?php
+                            $footer_social_icons_list = get_field( 'footer_social_icons_list', 58);
+                        ?>
+                        <?php foreach ($footer_social_icons_list as $footer_social_icon){ ?>
+                        <div class="social__item">
+                            <a href="<?php echo $footer_social_icon['footer_social_icon']['footer_social_icon_link']; ?>" class="social__link">
+                                <picture>
+                                    <img src="<?php echo $footer_social_icon['footer_social_icon']['footer_social_icon_img']; ?>" alt="">
+                                </picture>
+                            </a>
+                        </div>
+                        <?php } ?>
+                    </div>
                 </div>
             </div>
         </div>
