@@ -173,15 +173,7 @@
         <main class="site__main">
             <section class="main">
                 <div class="main__slider">
-                    <?php
-                    // выведем полученные записи
-                    $slides_home = get_field( 'slides_home', $page_id);
-    
-                   // echo '<pre>';
-                    //var_dump($slides_home);
-                    //echo '</pre>';
-                    ?>
-                    
+                    <?php $slides_home = get_field( 'slides_home', $page_id); ?>
                     <?php foreach( $slides_home as $slides_home_slide ){ ?>
                     <div class="main__item" style="background: url(<?php echo $slides_home_slide['slides_home_list']['slide_home_image']; ?>) no-repeat right/cover;">
                         <div class="main__container container">
@@ -303,15 +295,15 @@
                     <div class="schedule__container container">
                         <div class="schedule__content">
                             <div class="schedule__row row">
+                                
+                                <!-- Первый блок -->
                                 <div class="schedule__left">
-                                    <?php
-                                        $post = get_post(53);
-                                        $text_block_list = get_field( 'text_block_list', $post->ID);
-                                    ?>
-                                    <?php foreach ($text_block_list as $text_block_list_item){ ?>
-                                        <div class="schedule__option main__option"><?php echo $text_block_list_item['text_block_list_item'] ?></div>
+                                    <?php $first_block_advantages = get_field( 'first_block_advantages', $page_id); ?>
+                                    <?php foreach ($first_block_advantages as $first_block_advantage){ ?>
+                                        <div class="schedule__option main__option"><?php echo $first_block_advantage['first_block_advantage']; ?></div>
                                     <?php } ?>
                                 </div>
+                                <!-- Первый блок КОНЕЦ -->
                                 
                                 <!-- Режим работы -->
                                 <div class="schedule__right" data-da="schedule__footer .container, 0, 860">
@@ -351,21 +343,15 @@
                 <div class="service__container container">
                     <div class="service__row row">
                         <div class="service__content">
-                            <?php
-                            $post = get_post(54);
-                            $text_block_list = get_field( 'text_block_list', $post_id->ID);
-                            $text_block_header_2 = get_field( 'text_block_header_2', $post_id->ID);
-                            $text_block_link = get_field( 'text_block_link', $post_id->ID);
-                            ?>
-                            
-                            <h2 class="service__title"><?php echo $post->post_title; ?></h2>
-                            <h3 class="service__subtitle"><?php echo $text_block_header_2; ?></h3>
+                            <?php $home_second_block = get_field( 'home_second_block', $page_id); ?>
+                            <h2 class="service__title"><?php echo $home_second_block['home_second_block_header_1']; ?></h2>
+                            <h3 class="service__subtitle"><?php echo $home_second_block['home_second_block_header_2']; ?></h3>
                             <ul class="service__options">
-                                <?php foreach ($text_block_list as $text_block_list_item){ ?>
-                                <li class="service__item"><span><?php echo $text_block_list_item['text_block_list_item'] ?></span></li>
+                                <?php foreach ($home_second_block['home_second_block_advantages'] as $home_second_block_advantage){ ?>
+                                <li class="service__item"><span><?php echo $home_second_block_advantage['home_second_block_advantage'] ?></span></li>
                                 <?php } ?>
                             </ul>
-                            <a href="<?php echo $text_block_link; ?>" class="service__btn btn">Подробнее</a>
+                            <a href="<?php echo $home_second_block['home_second_block_link']; ?>" class="service__btn btn">Подробнее</a>
                         </div>
                         <div class="service__image"><picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/service/service-1.webp" type="image/webp"><img src="img/service/service-1.png" alt=""></picture></div>
                     </div>
@@ -376,20 +362,15 @@
                 <div class="service__container container">
                     <div class="service__row row">
                         <div class="service__content">
-                            <?php
-                            $post = get_post(55);
-                            $text_block_list = get_field( 'text_block_list', $post_id->ID);
-                            $text_block_header_2 = get_field( 'text_block_header_2', $post_id->ID);
-                            $text_block_link = get_field( 'text_block_link', $post_id->ID);
-                            ?>
-                            <h2 class="service__title"><?php echo $post->post_title; ?></h2>
-                            <h3 class="service__subtitle"><?php echo $text_block_header_2; ?></h3>
+                            <?php $home_third_block = get_field( 'home_third_block', $page_id); ?>
+                            <h2 class="service__title"><?php echo $home_third_block['home_third_block_header_1']; ?></h2>
+                            <h3 class="service__subtitle"><?php echo $home_third_block['home_third_block_header_2']; ?></h3>
                             <ul class="service__options">
-                                <?php foreach ($text_block_list as $text_block_list_item){ ?>
-                                    <li class="service__item"><span><?php echo $text_block_list_item['text_block_list_item'] ?></span></li>
+                                <?php foreach ($home_third_block['home_third_block_advantages'] as $home_third_block_advantage){ ?>
+                                    <li class="service__item"><span><?php echo $home_third_block_advantage['home_third_block_advantage'] ?></span></li>
                                 <?php } ?>
                             </ul>
-                            <a href="<?php echo $text_block_link; ?>" class="service__btn btn">Подробнее</a>
+                            <a href="<?php echo $home_third_block['home_third_block_link']; ?>" class="service__btn btn">Подробнее</a>
                         </div>
                         <div class="service__image"><picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/service/service-2.webp" type="image/webp"><img src="img/service/service-2.png" alt=""></picture></div>
                     </div>
@@ -400,20 +381,15 @@
                 <div class="service__container container">
                     <div class="service__row row">
                         <div class="service__content">
-                            <?php
-                            $post = get_post(56);
-                            $text_block_list = get_field( 'text_block_list', $post_id->ID);
-                            $text_block_header_2 = get_field( 'text_block_header_2', $post_id->ID);
-                            $text_block_link = get_field( 'text_block_link', $post_id->ID);
-                            ?>
-                            <h2 class="service__title"><?php echo $post->post_title; ?></h2>
-                            <h3 class="service__subtitle"><?php echo $text_block_header_2; ?></h3>
+                            <?php $home_fourth_block = get_field( 'home_fourth_block', $page_id); ?>
+                            <h2 class="service__title"><?php echo $home_fourth_block['home_fourth_block_header_1']; ?></h2>
+                            <h3 class="service__subtitle"><?php echo $home_fourth_block['home_fourth_block_header_2']; ?></h3>
                             <ul class="service__options">
-                                <?php foreach ($text_block_list as $text_block_list_item){ ?>
-                                    <li class="service__item"><span><?php echo $text_block_list_item['text_block_list_item'] ?></span></li>
+                                <?php foreach ($home_fourth_block['home_fourth_block_advantages'] as $home_fourth_block_advantage){ ?>
+                                    <li class="service__item"><span><?php echo $home_fourth_block_advantage['home_fourth_block_advantage'] ?></span></li>
                                 <?php } ?>
                             </ul>
-                            <a href="<?php echo $text_block_link; ?>" class="service__btn btn">Подробнее</a>
+                            <a href="<?php echo $home_fourth_block['home_fourth_block_link']; ?>" class="service__btn btn">Подробнее</a>
                         </div>
                         <div class="service__image"><picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/service/service-3.webp" type="image/webp"><img src="img/service/service-3.png" alt=""></picture></div>
                     </div>
@@ -424,20 +400,15 @@
                 <div class="service__container container">
                     <div class="service__row row">
                         <div class="service__content">
-                            <?php
-                            $post = get_post(57);
-                            $text_block_list = get_field( 'text_block_list', $post_id->ID);
-                            $text_block_header_2 = get_field( 'text_block_header_2', $post_id->ID);
-                            $text_block_link = get_field( 'text_block_link', $post_id->ID);
-                            ?>
-                            <h2 class="service__title"><?php echo $post->post_title; ?></h2>
-                            <h3 class="service__subtitle"><?php echo $text_block_header_2; ?></h3>
+                            <?php $home_fifth_block = get_field( 'home_fifth_block', $page_id); ?>
+                            <h2 class="service__title"><?php echo $home_fifth_block['home_fifth_block_header_1']; ?></h2>
+                            <h3 class="service__subtitle"><?php echo $home_fifth_block['home_fifth_block_header_2']; ?></h3>
                             <ul class="service__options">
-                                <?php foreach ($text_block_list as $text_block_list_item){ ?>
-                                    <li class="service__item"><span><?php echo $text_block_list_item['text_block_list_item'] ?></span></li>
+                                <?php foreach ($home_fifth_block['home_fifth_block_advantages'] as $home_fifth_block_advantage){ ?>
+                                    <li class="service__item"><span><?php echo $home_fifth_block_advantage['home_fifth_block_advantage'] ?></span></li>
                                 <?php } ?>
                             </ul>
-                            <a href="<?php echo $text_block_link; ?>" class="service__btn btn">Подробнее</a>
+                            <a href="<?php echo $home_fifth_block['home_fifth_block_link']; ?>" class="service__btn btn">Подробнее</a>
                         </div>
                         <div class="service__image"><picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/service/service-4.webp" type="image/webp"><img src="img/service/service-4.png" alt=""></picture></div>
                     </div>
