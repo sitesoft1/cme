@@ -174,34 +174,31 @@
             <section class="main">
                 <div class="main__slider">
                     <?php
-                    // Получим записи определенного типа
-                    $posts = get_posts( array(
-                        'numberposts' => -1,
-                        'orderby'     => 'date',
-                        'order'       => 'ASC',
-                        'post_type'   => 'home_slides'
-                    ) );
-                    ?>
-                    <?php
                     // выведем полученные записи
-                    foreach( $posts as $post ){
-                    $fields = get_fields($post->ID);
+                    $slides_home = get_field( 'slides_home', $page_id);
+    
+                   // echo '<pre>';
+                    //var_dump($slides_home);
+                    //echo '</pre>';
                     ?>
-                    <div class="main__item" style="background: url(<?php echo get_the_post_thumbnail_url( $post->ID, 'full' ); ?>) no-repeat right/cover;">
+                    
+                    <?php foreach( $slides_home as $slides_home_slide ){ ?>
+                    <div class="main__item" style="background: url(<?php echo $slides_home_slide['slides_home_list']['slide_home_image']; ?>) no-repeat right/cover;">
                         <div class="main__container container">
                             <div class="main__body">
                                 <h1 class="main__title title-h1">
-                                    <?php echo $post->post_title; ?>
-                                    <span><?php echo $fields['header_2']; ?></span>
+                                    <?php echo $slides_home_slide['slides_home_list']['slide_home_header_1']; ?>
+                                    <span><?php echo $slides_home_slide['slides_home_list']['slide_home_header_2']; ?></span>
                                 </h1>
-                                <?php foreach ($fields['slide_list'] as $slide_item){ ?>
-                                    <div class="main__option"><span><?php echo $slide_item['slide_list_item']; ?></span>
+                                <?php foreach ($slides_home_slide['slides_home_list']['slide_home_advantages'] as $slide_home_advantage){ ?>
+                                    <div class="main__option"><span><?php echo $slide_home_advantage['slide_home_advantage']; ?></span>
                                     </div>
                                 <?php } ?>
-                                <a href="<?php echo $fields['home_slide_link']; ?>" class="main__btn btn">Подробнее</a>
+                                <a href="<?php echo $slides_home_slide['slides_home_list']['slide_home_link']['url']; ?>" class="main__btn btn">Подробнее</a>
                             </div>
                         </div>
                     </div>
+                    
                     <?php } ?>
                 </div>
                 
