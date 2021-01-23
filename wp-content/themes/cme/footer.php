@@ -158,9 +158,14 @@
                         ?>
                         <?php foreach ($footer_social_icons_list as $footer_social_icon){ ?>
                         <div class="social__item">
-                            <a href="<?php echo $footer_social_icon['footer_social_icon']['footer_social_icon_link']; ?>" class="social__link">
+                            <a href="<?php echo $footer_social_icon['footer_social_icon']['footer_social_icon_link']; ?>" class="social__link show_desktop">
                                 <picture>
                                     <img src="<?php echo $footer_social_icon['footer_social_icon']['footer_social_icon_img']; ?>" alt="">
+                                </picture>
+                            </a>
+                            <a href="<?php echo $footer_social_icon['footer_social_icon']['footer_social_icon_link']; ?>" class="social__link show_mobile">
+                                <picture>
+                                    <img src="<?php echo $footer_social_icon['footer_social_icon']['footer_social_icon_img_mobile']; ?>" alt="">
                                 </picture>
                             </a>
                         </div>

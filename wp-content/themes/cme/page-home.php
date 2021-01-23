@@ -144,14 +144,8 @@
                         }
                         echo $menu_list;
                         ?>
-    
-                        <div class="header__mobile">
-                            <div class="header__phone">
-                                <a href="tel: +79646226464">+7 (964) <span>622-64-64</span></a>
-                            </div>
-    
-                            <a href="#appointment" class="header__btn btn popup-link">Записаться на осмотр</a>
-                        </div>
+                        
+                        <?php get_sidebar('homeright'); ?>
                         <form action="" class="header__search search">
                             <a href="" class="search__close">
                                 <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">

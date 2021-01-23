@@ -5563,7 +5563,19 @@ textarea.form__input {
   }
 }
 
+.show_mobile {
+  display: none;
+}
+
 @media screen and (max-width: 575px) {
+  .show_desktop {
+    display: none;
+  }
+  .show_mobile {
+    display: inline-flex !important;
+  }
+
+
   .media-text {
     display: block;
     margin: 0 -15px;
