@@ -8,9 +8,7 @@
  */
 get_header(); ?>
 <?php $page_id = get_the_ID(); ?>
-    <h1>СТРАНИЦА КОНТАКТОВ!!!</h1>
     <header class="site__header header ">
-        
         <div class="header__container container">
             <div class="header__body">
                 <div class="header__logo logo">
@@ -183,47 +181,52 @@ get_header(); ?>
             
             <div class="map__wrapper">
                 <div class="map__description">
-                    <div class="map__title">как нас найти</div>
+                    <?php
+                        $contact_header = get_field( 'contact_header', $page_id);
+                        $contact_adress = get_field( 'contact_adress', $page_id);
+                        $contact_phone_default = get_field( 'contact_phone', $page_id);
+                        $contact_phone_show = strip_tags($contact_phone_default);
+                        $contact_phone_link = preg_replace("/[^0-9]/", '', $contact_phone_default);
+
+                        $contact_email = get_field( 'contact_email', $page_id);
+                        $contact_regim_header = get_field( 'contact_regim_header', $page_id);
+                        
+                        $contact_regim_list = get_field( 'contact_regim_list', $page_id);
+                        
+                    ?>
+                    <div class="map__title"><?php echo $contact_header; ?></div>
                     <div class="map__details">
                         <div class="map__contact map__contact--address">
-                            <div class="map__label">Московская область, г. Мытищи,
-                                1-ый Рупасовский переулок, дом 6</div>
+                            <div class="map__label"><?php echo $contact_adress; ?></div>
                         </div>
                         <div class="map__contact">
                             <div class="map__label">Телефон:</div>
-                            <a href="tel: +79646226464" class="map__link">+7 (964) 622-64-64</a>
+                            <a href="tel: +<?php echo $contact_phone_link; ?>" class="map__link"><?php echo $contact_phone_show; ?></a>
                         </div>
                         <div class="map__contact">
                             <div class="map__label">Email:</div>
-                            <a href="mailto: info@sibtest64.ru" class="map__link">info@sibtest64.ru</a>
+                            <a href="mailto: <?php echo $contact_email; ?>" class="map__link"><?php echo $contact_email; ?></a>
                         </div>
                         <div class="map__schedule">
-                            <h2 class="schedule__title">РЕЖИМ РАБОТЫ</h2>
+                            <h2 class="schedule__title"><?php echo $contact_regim_header; ?></h2>
                             <div class="schedule__worktime-wrapper">
-                                <div class="schedule__worktime">
-                                    <div class="schedule__worktime-day">Пн-Пт..............</div>
-                                    <div class="schedule__worktime-clock">09:00 • 19:00</div>
-                                </div>
-                                <div class="schedule__worktime">
-                                    <div class="schedule__worktime-day">Сб....................</div>
-                                    <div class="schedule__worktime-clock">10:00 • 16:00</div>
-                                </div>
-                                <div class="schedule__worktime">
-                                    <div class="schedule__worktime-day">Вс....................</div>
-                                    <div class="schedule__worktime-clock">Выходной</div>
-                                </div>
+                                <?php foreach ($contact_regim_list as $contact_regim_item ){ ?>
+                                    <div class="schedule__worktime">
+                                        <div class="schedule__worktime-day"><?php echo $contact_regim_item['contact_regim_item']['contact_regim_day']; ?></div>
+                                        <div class="schedule__worktime-clock"><?php echo $contact_regim_item['contact_regim_item']['contact_regim_time']; ?></div>
+                                    </div>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
                 </div>
-                <iframe
-                        src="https://yandex.ru/map-widget/v1/?um=constructor%3A7f5d11ac98859351d79181499470f91940e299621331f371d3c8f8b720359010&amp;source=constructor"
-                        width="100%" height="500" frameborder="0"></iframe>
+                <?php $home_address_map = get_field( 'home_address_map', 58); ?>
+                <?php echo $home_address_map; ?>
             </div>
             <div class="map__support container">
                 <div class="schedule__support-wrapper">
                     <div class="schedule__support">Круглосуточная поддержка по телефону:</div>
-                    <a href="tel: +79646226464" class="schedule__phone">+7 (964) <span>622-64-64</span></a>
+                    <a href="tel: +<?php echo $contact_phone_link; ?>" class="schedule__phone"><?php echo $contact_phone_default; ?></a>
                 </div>
                 <a href="#appointment" class="schedule__btn btn popup-link">Записаться на осмотр</a>
             </div>
