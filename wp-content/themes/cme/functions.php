@@ -203,4 +203,23 @@ if (!function_exists('content_class_by_sidebar')) {
 	}
 }
 
+//Добавим хлебные крошки
+function the_breadcrumb(){
+	//https://mtekk.us/archives/docs/using-bcn_display-and-bcn_display_list/
+	
+	if(function_exists('bcn_display'))
+	{
+		$bcn_display = bcn_display(true);
+		$bcn_arr = explode('&gt;', $bcn_display);
+		
+		$active_url = $_SERVER['REQUEST_URI'];
+		
+		$bcn_arr = array_unique($bcn_arr);
+		array_shift($bcn_arr);
+		echo implode('<span>&nbsp;\\&nbsp;</span>', $bcn_arr);
+	}
+	
+}
+//Добавим хлебные крошки КОНЕЦ
+
 ?>

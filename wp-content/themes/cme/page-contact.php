@@ -1,12 +1,16 @@
 <?php
 /**
- * Шаблон обычной страницы (page.php)
+ * Template Name: Шаблон страницы контакты
+ * Template Post Type: page
+ * Шаблон обычной страницы (page-contact.php)
  * @package WordPress
  * @subpackage your-clean-template-3
  */
 get_header(); ?>
 <?php $page_id = get_the_ID(); ?>
+    <h1>СТРАНИЦА КОНТАКТОВ!!!</h1>
     <header class="site__header header ">
+        
         <div class="header__container container">
             <div class="header__body">
                 <div class="header__logo logo">
@@ -176,11 +180,52 @@ get_header(); ?>
                     <h1 class="breadcrumbs__title"><?php the_title(); // заголовок поста ?></h1>
                 </div>
             </div>
-
-            <div class="common__container container">
-                <!-- Выведем контент страницы по умолчанию -->
-                    <?php the_content(); ?>
-                <!-- Выведем контент страницы по умолчанию -->
+            
+            <div class="map__wrapper">
+                <div class="map__description">
+                    <div class="map__title">как нас найти</div>
+                    <div class="map__details">
+                        <div class="map__contact map__contact--address">
+                            <div class="map__label">Московская область, г. Мытищи,
+                                1-ый Рупасовский переулок, дом 6</div>
+                        </div>
+                        <div class="map__contact">
+                            <div class="map__label">Телефон:</div>
+                            <a href="tel: +79646226464" class="map__link">+7 (964) 622-64-64</a>
+                        </div>
+                        <div class="map__contact">
+                            <div class="map__label">Email:</div>
+                            <a href="mailto: info@sibtest64.ru" class="map__link">info@sibtest64.ru</a>
+                        </div>
+                        <div class="map__schedule">
+                            <h2 class="schedule__title">РЕЖИМ РАБОТЫ</h2>
+                            <div class="schedule__worktime-wrapper">
+                                <div class="schedule__worktime">
+                                    <div class="schedule__worktime-day">Пн-Пт..............</div>
+                                    <div class="schedule__worktime-clock">09:00 • 19:00</div>
+                                </div>
+                                <div class="schedule__worktime">
+                                    <div class="schedule__worktime-day">Сб....................</div>
+                                    <div class="schedule__worktime-clock">10:00 • 16:00</div>
+                                </div>
+                                <div class="schedule__worktime">
+                                    <div class="schedule__worktime-day">Вс....................</div>
+                                    <div class="schedule__worktime-clock">Выходной</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <iframe
+                        src="https://yandex.ru/map-widget/v1/?um=constructor%3A7f5d11ac98859351d79181499470f91940e299621331f371d3c8f8b720359010&amp;source=constructor"
+                        width="100%" height="500" frameborder="0"></iframe>
+            </div>
+            <div class="map__support container">
+                <div class="schedule__support-wrapper">
+                    <div class="schedule__support">Круглосуточная поддержка по телефону:</div>
+                    <a href="tel: +79646226464" class="schedule__phone">+7 (964) <span>622-64-64</span></a>
+                </div>
+                <a href="#appointment" class="schedule__btn btn popup-link">Записаться на осмотр</a>
             </div>
         </section>
     </main>
