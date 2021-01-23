@@ -185,7 +185,7 @@ get_header(); ?>
                     <?php
                     // параметры по умолчанию
                         $posts = get_posts( array(
-                            //'numberposts' => 6,
+                            'numberposts' => 5,
                             'post_type'   => 'feedback',
                         ) );
                     ?>
@@ -244,12 +244,11 @@ get_header(); ?>
                             </div>
                             
                         </div>
-                        
+                        <?php the_posts_pagination(); ?>
                     <?php } ?>
                 </div>
                 <div class="pagination">
-                    
-                    <!--<ul class="pagination__list">
+                    <ul class="pagination__list">
                         <li><a href="" class="pagination__page pagination__prev"><picture><source srcset="img/icons/pag-chevron-left.svg" type="image/webp"><img src="img/icons/pag-chevron-left.svg" alt=""></picture></a></li>
                         <li><span class="pagination__page pagination__page--current">1</span></li>
                         <li><a href="" class="pagination__page">2</a></li>
@@ -257,7 +256,7 @@ get_header(); ?>
                         <li><span class="pagination__page pagination__page--dots">...</span></li>
                         <li><a href="" class="pagination__page">16</a></li>
                         <li><a href="" class="pagination__page pagination__next"><picture><source srcset="img/icons/pag-chevron-right.svg" type="image/webp"><img src="img/icons/pag-chevron-right.svg" alt=""></picture></a></li>
-                    </ul>-->
+                    </ul>
                     
                 </div>
             </div>
