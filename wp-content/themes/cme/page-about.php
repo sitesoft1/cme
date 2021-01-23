@@ -192,7 +192,6 @@ get_header(); ?>
                 
                 $text_after_first_image = get_field( 'text_after_first_image', $page_id);
                 $text_after_second_image = get_field( 'text_after_second_image', $page_id);
-                
             ?>
             <div class="about__container container">
                     <div class="about__main about-main" style="background: url(<?php echo $about_top_image; ?>) no-repeat center/cover;">
