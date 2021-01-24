@@ -183,6 +183,136 @@ get_header(); ?>
                 <!-- Выведем контент страницы по умолчанию -->
             </div>
         </section>
+
+        <section class="news">
+            <div class="news__container container">
+                <div class="news__cards">
+                    <?php
+                        // параметры по умолчанию
+                        $posts = get_posts( array(
+                            'numberposts' => 12,
+                            //'post_type'   => 'cases',
+                        ) );
+                    ?>
+                    <?php foreach( $posts as $post ){ ?>
+                    <div class="news__card">
+                        <div class="news__content">
+                            <a href="<?php echo the_permalink(); ?>" class="news__title"><?php echo $post->post_title; ?></a>
+                            <a href="<?php echo the_permalink(); ?>">
+                                <?php if(get_the_post_thumbnail( $post->ID, 'full')){ ?>
+                                    <div class="news__image">
+                                        <picture><source srcset="<?php echo get_the_post_thumbnail( $post->ID, 'full'); ?>" type="image/webp"><img src="<?php echo get_the_post_thumbnail( $post->ID, 'full'); ?>" alt=""></picture>
+                                    </div>
+                                <?php }else{ ?>
+                                    <div class="news__image">
+                                        <picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/typical/typical-1.webp" type="image/webp"><img src="<?php echo get_template_directory_uri(); ?>/img/typical/typical-1.jpg" alt=""></picture>
+                                    </div>
+                                <?php } ?>
+                            </a>
+                            <div class="news__excerpt"><?php echo $post->post_content; ?></div>
+                            <a href="<?php echo the_permalink(); ?>" class="news__btn">Узнать больше</a>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    <!--
+                    <div class="news__card">
+                        <div class="news__content">
+                            <a href="" class="news__title">Заголовок новости</a>
+                            <a href="">
+                                <div class="news__image">
+                                    <picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/typical/typical-1.webp" type="image/webp"><img src="<?php echo get_template_directory_uri(); ?>/img/typical/typical-1.jpg" alt=""></picture>
+                                </div>
+                            </a>
+                            <div class="news__excerpt">Товарищи! сложившаяся структура организации представляет
+                                собой интересный эксперимент проверки направлений прогрессивного развития.
+                                Далеко-далеко за словесными горами в стране.</div>
+                            <a href="" class="news__btn">Узнать больше</a>
+                        </div>
+                    </div>
+                    <div class="news__card">
+                        <div class="news__content">
+                            <a href="" class="news__title">Заголовок статьи, анонса, новости</a>
+                            <a href="">
+                                <div class="news__image">
+                                    <picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/typical/typical-1.webp" type="image/webp"><img src="<?php echo get_template_directory_uri(); ?>/img/typical/typical-1.jpg" alt=""></picture>
+                                </div>
+                            </a>
+                            <div class="news__excerpt">Идейные соображения высшего порядка, а также рамки и место
+                                обучения кадров</div>
+                            <a href="" class="news__btn">Узнать больше</a>
+                        </div>
+                    </div>
+                    <div class="news__card">
+                        <div class="news__content">
+                            <a href="" class="news__title">Заголовок новости</a>
+                            <a href="">
+                                <div class="news__image">
+                                    <picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/typical/typical-1.webp" type="image/webp"><img src="<?php echo get_template_directory_uri(); ?>/img/typical/typical-1.jpg" alt=""></picture>
+                                </div>
+                            </a>
+                            <div class="news__excerpt">Товарищи! сложившаяся структура организации представляет
+                                собой интересный эксперимент проверки направлений прогрессивного развития.
+                                Далеко-далеко за словесными горами в стране.</div>
+                            <a href="" class="news__btn">Узнать больше</a>
+                        </div>
+                    </div>
+                    <div class="news__card">
+                        <div class="news__content">
+                            <a href="" class="news__title">Заголовок статьи, анонса, новости</a>
+                            <a href="">
+                                <div class="news__image">
+                                    <picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/typical/typical-1.webp" type="image/webp"><img src="<?php echo get_template_directory_uri(); ?>/img/typical/typical-1.jpg" alt=""></picture>
+                                </div>
+                            </a>
+                            <div class="news__excerpt">Идейные соображения высшего порядка, а также рамки и место
+                                обучения кадров</div>
+                            <a href="" class="news__btn">Узнать больше</a>
+                        </div>
+                    </div>
+                    <div class="news__card">
+                        <div class="news__content">
+                            <a href="" class="news__title">Заголовок статьи, анонса, новости</a>
+                            <a href="">
+                                <div class="news__image">
+                                    <picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/typical/typical-1.webp" type="image/webp"><img src="<?php echo get_template_directory_uri(); ?>/img/typical/typical-1.jpg" alt=""></picture>
+                                </div>
+                            </a>
+                            <div class="news__excerpt">Идейные соображения высшего порядка, а также рамки и место
+                                обучения кадров</div>
+                            <a href="" class="news__btn">Узнать больше</a>
+                        </div>
+                    </div>
+                    <div class="news__card">
+                        <div class="news__content">
+                            <a href="" class="news__title">Заголовок новости</a>
+                            <a href="">
+                                <div class="news__image">
+                                    <picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/typical/typical-1.webp" type="image/webp"><img src="<?php echo get_template_directory_uri(); ?>/img/typical/typical-1.jpg" alt=""></picture>
+                                </div>
+                            </a>
+                            <div class="news__excerpt">Товарищи! сложившаяся структура организации представляет
+                                собой интересный эксперимент проверки направлений прогрессивного развития.
+                                Далеко-далеко за словесными горами в стране.</div>
+                            <a href="" class="news__btn">Узнать больше</a>
+                        </div>
+                    </div>
+                    <div class="news__card">
+                        <div class="news__content">
+                            <a href="" class="news__title">Заголовок статьи, анонса, новости</a>
+                            <a href="">
+                                <div class="news__image">
+                                    <picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/typical/typical-1.webp" type="image/webp"><img src="<?php echo get_template_directory_uri(); ?>/img/typical/typical-1.jpg" alt=""></picture>
+                                </div>
+                            </a>
+                            <div class="news__excerpt">Идейные соображения высшего порядка, а также рамки и место
+                                обучения кадров</div>
+                            <a href="" class="news__btn">Узнать больше</a>
+                        </div>
+                    </div>
+                    -->
+                </div>
+            </div>
+        </section>
     </main>
 
     <div class="modals">
