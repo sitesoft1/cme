@@ -1367,6 +1367,17 @@ a {
   margin: 0;
 }
 
+.wp-block-media-text__content {
+  -webkit-box-flex: 0 !important;
+  -ms-flex: 0 0 50% !important;
+  flex: 0 0 50% !important;
+  padding-left: calc(15px + 15 * ((100vw - 320px) / (1600))) !important;
+}
+
+.wp-block-media-text__content p {
+  margin: 0 !important;
+}
+
 .thesis {
   margin-left: calc(0px + 29 * ((100vw - 320px) / (1600)));
   border-left: 6px solid #e42a2c;
@@ -1381,6 +1392,34 @@ a {
 .thesis p {
   font-weight: 400;
 }
+
+.wp-block-quote {
+  margin-left: calc(0px + 29 * ((100vw - 320px) / (1600)));
+  border-left: 6px solid #e42a2c;
+  background-color: #f0f0f0;
+  padding: 11px 0px 30px 30px;
+  margin-bottom: 10px;
+}
+
+.wp-block-quote cite {
+  font-weight: 400;
+  font-style: normal !important;
+  margin: 1.3em 0 !important;
+}
+
+.wp-block-quote p {
+  font-weight: 700;
+  margin: 0 0 11px 0;
+}
+
+@media screen and (max-width: 1920px){
+  .wp-block-quote p {
+    font-size: calc(16px + 6 * ((100vw - 320px)/ (1920 - 320)));
+    line-height: calc(30 / 22);
+    margin: 0 0 20px 0;
+  }
+}
+
 
 .block-table {
   padding-bottom: 10px;
@@ -1436,6 +1475,82 @@ a {
   padding-left: calc(5px + 4 * ((100vw - 320px) / (1600)));
   min-width: calc(74px + 20 * ((100vw - 320px) / (1600)));
 }
+
+/* WP */
+.wp-block-table {
+  padding-bottom: 10px;
+  margin-bottom: calc(12px + 48 * ((100vw - 320px) / (1600)));
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
+.wp-block-table::-webkit-scrollbar {
+  height: 8px;
+}
+
+.wp-block-table::-webkit-scrollbar-track {
+  background-color: #f6f6f6;
+  border-radius: 3px;
+}
+
+.wp-block-table::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background-color: #ccc3c3;
+}
+
+.wp-block-table table {
+  width: 100%;
+  font-weight: 600;
+  font-size: calc(12px + 2 * ((100vw - 320px) / (1920 - 320)));
+  border-bottom: 4px solid #bebebe;
+  padding-bottom: 4px;
+}
+
+.wp-block-table table th {
+  padding: 0 10px;
+  padding-top: calc(10px + 5 * ((100vw - 320px) / (1600)));
+  padding-bottom: calc(10px + 5 * ((100vw - 320px) / (1600)));
+  text-align: left;
+  border-bottom: 4px solid #e42a2c;
+  min-width: calc(74px + 20 * ((100vw - 320px) / (1600)));
+}
+
+.wp-block-table table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.wp-block-table table tbody tr:nth-child(odd) td {
+  background-color: #f0f0f0;
+}
+
+.wp-block-table table td {
+  padding-top: calc(8px + 7 * ((100vw - 320px) / (1600)));
+  padding-right: calc(5px + 4 * ((100vw - 320px) / (1600)));
+  padding-bottom: calc(8px + 7 * ((100vw - 320px) / (1600)));
+  padding-left: calc(5px + 4 * ((100vw - 320px) / (1600)));
+  min-width: calc(74px + 20 * ((100vw - 320px) / (1600)));
+}
+
+.wp-block-table tbody tr:first-child td{
+  padding: 0 10px;
+  padding-top: calc(10px + 5 * ((100vw - 320px)/ (1600)));
+  padding-bottom: calc(10px + 5 * ((100vw - 320px)/ (1600)));
+  text-align: left;
+  border-bottom: 4px solid #e42a2c;
+  min-width: calc(74px + 20 * ((100vw - 320px)/ (1600)));
+  background-color: #fff !important;
+}
+.wp-block-table figcaption {
+  font-size: calc(12px + 2 * ((100vw - 320px) / (1920 - 320)));
+  line-height: calc(16 / 12);
+  margin-top: 15px;
+  font-weight: 400;
+}
+.wp-block-table figcaption strong {
+  color: #e42a2c;
+}
+/* WP END */
 
 .block-table figcaption {
   font-size: calc(12px + 2 * ((100vw - 320px) / (1920 - 320)));
