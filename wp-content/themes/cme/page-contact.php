@@ -7,6 +7,13 @@
  * @subpackage your-clean-template-3
  */
 get_header(); ?>
+<?php if($_SERVER['REQUEST_METHOD'] == 'POST'){ ?>
+    <script>
+        $( document ).ready(function() {
+            $('#appointment').toggleClass("open");
+        });
+    </script>
+<?php } ?>
 <?php $page_id = get_the_ID(); ?>
     <header class="site__header header ">
         <div class="header__container container">
@@ -244,39 +251,7 @@ get_header(); ?>
                         </svg>
                     </a>
                     <div class="appointment__form form">
-                        <form action="#" id="form" class="form__body">
-                            <div class="appointment__title title-h2">Записаться на осмотр</div>
-                            <div class="appointment__text">Заполните эту форму и в самое ближайшее время с вами свяжется наш сотрудник, который уточнит все детали и согласует с вами время осмотра</div>
-                            <div class="form__item">
-                                <label for="appointmentName" class="form__label">Ваше имя*:</label>
-                                <input id="appointmentName" type="text" name="name" class="form__input">
-                            </div>
-                            <div class="form__item">
-                                <label for="appointmentEmail" class="form__label">Контактный телефон*:</label>
-                                <input id="appointmentEmail" type="text" name="phone" class="form__input form__input--phone"
-                                       placeholder="+7 (___) ___-__-__">
-                            </div>
-                            <div class="form__item">
-                                <label for="appointmentEmail" class="form__label">Модель авто и год выпуска*:</label>
-                                <input id="appointmentEmail" type="text" name="phone" class="form__input"
-                                       placeholder="Volvo XC 90 ( 2007), T2.5, AWD">
-                            </div>
-
-                            <div class="form__item">
-                                <div class="form__label">Тип работ:</div>
-                                <select name="workType" class="form__select">
-                                    <option value="Комплексная диагностика" selected>Комплексная диагностика</option>
-                                    <option value="Кузовные работы">Кузовные работы</option>
-                                    <option value="Замена узлов и агрегатов">Замена узлов и агрегатов</option>
-                                </select>
-                            </div>
-                            <div class="form__item form__item--full form__item--center">
-                                <button type="submit" class="form__button btn">
-                                    <i class="icon-send"></i>
-                                    <span>Отправить</span>
-                                </button>
-                            </div>
-                        </form>
+                        <?php get_sidebar('homemap'); ?>
                     </div>
                 </div>
             </div>

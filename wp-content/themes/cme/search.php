@@ -5,6 +5,13 @@
  * @subpackage your-clean-template-3
  */
 get_header(); ?>
+<?php if($_SERVER['REQUEST_METHOD'] == 'POST'){ ?>
+    <script>
+        $( document ).ready(function() {
+            $('#appointment').toggleClass("open");
+        });
+    </script>
+<?php } ?>
     <header class="site__header header ">
         <div class="header__container container">
             <div class="header__body">
@@ -186,5 +193,23 @@ get_header(); ?>
             </div>
         </section>
     </main>
+
+    <div class="modals">
+        <div id="appointment" class="popup appointment">
+            <div class="popup__body">
+                <div class="popup__content appointment__content">
+                    <a href="" class="popup__close close-popup">
+                        <svg width="16" height="16" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 1L1 7" stroke="#B3B3B3" />
+                            <path d="M7 7L1 1" stroke="#B3B3B3" />
+                        </svg>
+                    </a>
+                    <div class="appointment__form form">
+                        <?php get_sidebar('homemap'); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <?php get_footer(); ?>
