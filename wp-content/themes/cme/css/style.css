@@ -1325,7 +1325,7 @@ ul li.item-has-children ul li::before {
   background: #e42a2c;
 }
 
-/* WP */
+/* WP. */
 ul li ul {
     margin-top: 1em;
     padding: 0;
