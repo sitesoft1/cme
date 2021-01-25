@@ -249,11 +249,12 @@ get_header(); ?>
                                 </div>
                                 
                             </div>
-                            
+                            <?php pagination(); ?>
                         </div>
                     <?php } ?>
                 </div>
                 <div class="pagination">
+                    
                     <!--
                     <ul class="pagination__list">
                         <li><a href="" class="pagination__page pagination__prev"><picture><source srcset="img/icons/pag-chevron-left.svg" type="image/webp"><img src="img/icons/pag-chevron-left.svg" alt=""></picture></a></li>

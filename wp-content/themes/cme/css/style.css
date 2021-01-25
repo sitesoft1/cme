@@ -1325,6 +1325,25 @@ ul li.item-has-children ul li::before {
   background: #e42a2c;
 }
 
+/* WP */
+ul li ul {
+    margin-top: 1em;
+    padding: 0;
+}
+
+ul li ul li {
+    font-weight: 400;
+    padding-left: 19px;
+    margin-bottom: 0.7em;
+}
+
+ul li ul li::before {
+    width: 9px;
+    height: 2px;
+    background: #e42a2c;
+}
+/* WP END */
+
 a {
   color: #373738;
   text-decoration: underline;
