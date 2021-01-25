@@ -220,7 +220,6 @@ get_header(); ?>
                                 <?php foreach ($contact_regim_list as $contact_regim_item ){ ?>
                                     <div class="schedule__worktime">
                                         <div class="schedule__worktime-day"><?php echo $contact_regim_item['contact_regim_item']['contact_regim_day']; ?></div>
-                                        <div class="schedule__worktime-clock"><?php echo $contact_regim_item['contact_regim_item']['contact_regim_time']; ?></div>
                                     </div>
                                 <?php } ?>
                             </div>

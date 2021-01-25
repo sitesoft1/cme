@@ -313,18 +313,20 @@
                                         $regim_list = get_field( 'regim_list', $page_id);
                                         $regim_sign = get_field( 'regim_sign', $page_id);
                                         $regim_phone_link = get_field( 'regim_phone_link', $page_id);
+                                        $regim_phone = preg_replace("/[^0-9]/", '', $regim_phone_link);;
                                     ?>
                                     <h2 class="schedule__title"><?php echo $regim_header; ?></h2>
                                     <div class="schedule__worktime-wrapper">
-                                        <?php
-                                            foreach ($regim_list as $regim_list_item) {
-                                                echo $regim_list_item['regim_list_item'];
-                                            }
-                                        ?>
+                                        <?php foreach ($regim_list as $regim_list_item) { ?>
+                                            <div class="schedule__worktime">
+                                                <div class="schedule__worktime-day"><?php echo $regim_list_item['regim_list_item']; ?></div>
+                                            </div>
+                                        <?php  } ?>
                                     </div>
                                     <div class="schedule__support-wrapper">
                                         <div class="schedule__support"><?php echo $regim_sign; ?></div>
-                                        <?php echo $regim_phone_link; ?>
+                                        <a href="tel: +<?php echo $regim_phone; ?>" class="schedule__phone"><?php echo $regim_phone_link; ?></a>
+                                        
                                     </div>
                                     <a href="#appointment" class="schedule__btn btn popup-link">Записаться на осмотр</a>
                                 </div>
@@ -420,19 +422,31 @@
                 <!-- Как нас найти -->
                 <?php
                     $home_address_header = get_field( 'home_address_header', $page_id);
-                    $home_address_list = get_field( 'home_address_list', $page_id);
                     $home_address_map = get_field( 'home_address_map', $page_id);
+
+                    $home_address = get_field( 'home_address', $page_id);
+                    $home_phone = preg_replace("/[^0-9]/", '', $home_address['home_address_phone']);
+                    
                 ?>
                 <div class="map__wrapper">
                     <div class="map__description">
                         <div class="map__title"><?php echo $home_address_header; ?></div>
                         
                         <div class="map__details">
-                            <?php
-                                foreach ($home_address_list as $home_address_list_item){
-                                    echo $home_address_list_item['home_address_list_item'];
-                                }
-                            ?>
+                            <div class="map__contact map__contact--address">
+                                <div class="map__label"><?php echo $home_address['home_address_address']; ?></div>
+                            </div>
+
+                            <div class="map__contact">
+                                <div class="map__label">Телефон:</div>
+                                <a href="tel: +<?php echo $home_phone; ?>" class="map__link"><?php echo $home_address['home_address_phone']; ?></a>
+                            </div>
+
+                            <div class="map__contact">
+                                <div class="map__label">Email:</div>
+                                <a href="mailto: <?php echo $home_address['home_address_email']; ?>" class="map__link"><?php echo $home_address['home_address_email']; ?></a>
+                            </div>
+                            
                         </div>
                     </div>
                     <?php echo $home_address_map; ?>
