@@ -149,13 +149,13 @@
     
                             <a href="#appointment" class="header__btn btn popup-link">Записаться на осмотр</a>
                         </div>
-                        <form action="" class="header__search search">
+                        <form action="/" class="header__search search">
                             <a href="" class="search__close">
                                 <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M7.30055 9.42178L0 16.7223L2.12132 18.8437L9.42188 11.5431L16.7224 18.8437L18.8438 16.7223L11.5432 9.42178L18.8437 2.12132L16.7223 0L9.42188 7.30046L2.12142 0L9.80068e-05 2.12132L7.30055 9.42178Z" fill="#8A8A8A"/>
                                 </svg>
                             </a>
-                            <input type="search" name="search" pattern=".*\S.*" required placeholder="Поиск по сайту">
+                            <input id="search-field" type="search" name="s" pattern=".*\S.*" required placeholder="Поиск по сайту">
                             <button class="search__btn" type="submit">
                                 <span>Search</span>
                             </button>

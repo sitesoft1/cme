@@ -1,8 +1,8 @@
 <?php
 /**
- * Template Name: Шаблон страницы О нас
+ * Template Name: Шаблон страницы услуги
  * Template Post Type: page
- * Шаблон обычной страницы (page-about.php)
+ * Шаблон обычной страницы (page-service.php)
  * @package WordPress
  * @subpackage your-clean-template-3
  */
@@ -11,7 +11,6 @@ get_header(); ?>
     <header class="site__header header ">
         <div class="header__container container">
             <div class="header__body">
-                
                 <div class="header__logo logo">
                     <div class="logo__bg"></div>
                     <a href="/" class="logo__link">
@@ -168,7 +167,7 @@ get_header(); ?>
     </header>
 
     <main class="site__main">
-        <section class="about">
+        <section class="map map--contacts">
             <div class="breadcrumbs">
                 <div class="breadcrumbs__container container">
                     <div class="breadcrumbs__items">
@@ -180,55 +179,81 @@ get_header(); ?>
                 </div>
             </div>
 
-            <?php
-                $about_top_image = get_field( 'about_top_image', $page_id);
-                $about_top_header = get_field( 'about_top_header', $page_id);
-                $about_top_sign = get_field( 'about_top_sign', $page_id);
-                
-                $about_middle_image = get_field( 'about_middle_image', $page_id);
-                $about_middle_header = get_field( 'about_middle_header', $page_id);
-                
-                $about_middle_bottom = get_field( 'about_middle_bottom', $page_id);
-                
-                $text_after_first_image = get_field( 'text_after_first_image', $page_id);
-                $text_after_second_image = get_field( 'text_after_second_image', $page_id);
-            ?>
-            <div class="about__container container">
-                    <div class="about__main about-main" style="background: url(<?php echo $about_top_image; ?>) no-repeat center/cover;">
-                        <div class="about-main__content">
-                            <h1 class="about-main__title title-h1"><?php echo $about_top_header; ?></h1>
-                            <div class="about-main__text"><?php echo $about_top_sign; ?></div>
+            <div class="service-page__filter filter">
+                <div class="filter__container container">
+                    <div class="filter__car">
+                        <div class="filter__mark">
+                            <div class="filter__label filter__label--car">Марка автомобиля:</div>
+                            <div class="filter__select filter-select">
+                                <div class="filter-select__title">
+                                    <div class="filter-select__value">
+                                        <span>Выберите марку авто</span>
+                                    </div>
+                                </div>
+                                <div class="filter-select__options">
+                                    <div class="filter-select__container container">
+                                        <div class="filter-select__row">
+                                            <div class="filter-select__item">
+                                                <div class="filter-select__character">A</div>
+                                                <div class="filter-select__links">
+                                                    <a href="volvo.html" class="filter-select__model">Acura</a>
+                                                    <a href="volvo.html" class="filter-select__model">Alfa Romeo</a>
+                                                    <a href="volvo.html" class="filter-select__model">Asia</a>
+                                                    <a href="volvo.html" class="filter-select__model">Aston Martin</a>
+                                                    <a href="volvo.html" class="filter-select__model">Audi</a>
+                                                </div>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <div class="filter-select__character">B</div>
+                                                <div class="filter-select__links">
+                                                    <a href="volvo.html" class="filter-select__model">BMW</a>
+                                                    <a href="volvo.html" class="filter-select__model">BYD</a>
+                                                    <a href="volvo.html" class="filter-select__model">Bentley</a>
+                                                    <a href="volvo.html" class="filter-select__model">Brilliance</a>
+                                                    <a href="volvo.html" class="filter-select__model">Buick</a>
+                                                </div>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <div class="filter-select__character">C</div>
+                                                <div class="filter-select__links">
+                                                    <a href="volvo.html" class="filter-select__model">Cadillac</a>
+                                                    <a href="volvo.html" class="filter-select__model">Changan</a>
+                                                    <a href="volvo.html" class="filter-select__model">Chery</a>
+                                                    <a href="volvo.html" class="filter-select__model">Chevrolet</a>
+                                                    <a href="volvo.html" class="filter-select__model">Chrysler</a>
+                                                    <a href="volvo.html" class="filter-select__model">Citroen</a>
+                                                </div>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <div class="filter-select__character">D</div>
+                                                <div class="filter-select__links">
+                                                    <a href="volvo.html" class="filter-select__model">DW Hower</a>
+                                                    <a href="volvo.html" class="filter-select__model">Dacia</a>
+                                                    <a href="volvo.html" class="filter-select__model">Daewoo</a>
+                                                    <a href="volvo.html" class="filter-select__model">Daihatsu</a>
+                                                    <a href="volvo.html" class="filter-select__model">Datsun</a>
+                                                    <a href="volvo.html" class="filter-select__model">Dodge</a>
+                                                    <a href="volvo.html" class="filter-select__model">DongFeng</a>
+                                                </div>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <div class="filter-select__character">F</div>
+                                                <div class="filter-select__links">
+                                                    <a href="volvo.html" class="filter-select__model">FAW</a>
+                                                    <a href="volvo.html" class="filter-select__model">Fiat</a>
+                                                    <a href="volvo.html" class="filter-select__model">Ford</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-        
-                    <div class="about__text">
-                        <?php foreach ($text_after_first_image as $text_after_first_image_string){ ?>
-                            <p><?php echo $text_after_first_image_string['about_string']; ?></p>
-                        <?php } ?>
-                    </div>
-        
-                    <div class="about__team about-team" style="background: url(<?php echo $about_middle_image; ?>) no-repeat center/cover;">
-                        <div class="about-team__content">
-                            <h2 class="about-team__title title-h1"><?php echo $about_middle_header; ?></h2>
-                        </div>
-                    </div>
-        
-                    <div class="about__text">
-                        <?php foreach ($text_after_second_image as $text_after_second_image_string){ ?>
-                            <p><?php echo $text_after_second_image_string['about_string_after_second_image']; ?></p>
-                        <?php } ?>
-                    </div>
-        
-                    <div class="about__img">
-                        <picture><source srcset="<?php echo get_template_directory_uri(); ?>/img/about/img-1.webp" type="image/webp"><img src="<?php echo $about_middle_bottom; ?>" alt="" width="1137" height="550"></picture>
-                    </div>
-
-                    <!-- Выведем контент страницы по умолчанию -->
-                    <?php the_content(); ?>
-                    <!-- Выведем контент страницы по умолчанию -->
+                </div>
             </div>
-            
         </section>
+        
     </main>
 
     <div class="modals">
