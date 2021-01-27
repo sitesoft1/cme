@@ -1325,7 +1325,7 @@ ul li.item-has-children ul li::before {
   background: #e42a2c;
 }
 
-/* WP */
+/* WP. */
 ul li ul {
     margin-top: 1em;
     padding: 0;
@@ -1394,7 +1394,7 @@ a {
 }
 
 .wp-block-media-text__content p {
-  margin: 0 !important;
+  margin: 1.3em 1.3em !important;
 }
 
 .thesis {
