@@ -154,7 +154,7 @@ get_header(); ?>
                     ?>
     
                     <?php get_sidebar('homeright'); ?>
-                    <form action="/" class="header__search search">
+                    <form action="<?php echo site_url(); ?>" class="header__search search">
                         <a href="" class="search__close">
                             <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.30055 9.42178L0 16.7223L2.12132 18.8437L9.42188 11.5431L16.7224 18.8437L18.8438 16.7223L11.5432 9.42178L18.8437 2.12132L16.7223 0L9.42188 7.30046L2.12142 0L9.80068e-05 2.12132L7.30055 9.42178Z" fill="#8A8A8A"/>
@@ -185,16 +185,18 @@ get_header(); ?>
                     <h1 class="breadcrumbs__title"><?php the_title(); // заголовок поста ?></h1>
                 </div>
             </div>
-
+            
             <div class="service-page__filter filter">
                 <div class="filter__container container">
                     <div class="filter__car">
                         <div class="filter__mark">
+                            
+                            
                             <div class="filter__label filter__label--car">Марка автомобиля:</div>
                             <div class="filter__select filter-select">
                                 <div class="filter-select__title">
                                     <div class="filter-select__value">
-                                        <span>Выберите марку авто</span>
+                                        <span>Выберите марку автомобиля</span>
                                     </div>
                                 </div>
                                 <div class="filter-select__options">
@@ -234,7 +236,7 @@ get_header(); ?>
                                             <div class="filter-select__item">
                                                 <div class="filter-select__character">D</div>
                                                 <div class="filter-select__links">
-                                                    <a href="volvo.html" class="filter-select__model">DW Hower</a>
+                                                    <a href="volvo.html" class="filter-select__model">DW Hower</a>
                                                     <a href="volvo.html" class="filter-select__model">Dacia</a>
                                                     <a href="volvo.html" class="filter-select__model">Daewoo</a>
                                                     <a href="volvo.html" class="filter-select__model">Daihatsu</a>
@@ -256,9 +258,289 @@ get_header(); ?>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="filter__mark">
+                            <div class="filter__label filter__label--p0">Модель:</div>
+                            <div class="filter__select filter-select filter-select--model">
+                                <div class="filter-select__title">
+                                    <div class="filter-select__value">
+                                        <span>Модель:</span>
+                                    </div>
+                                </div>
+                                <div class="filter-select__options">
+                                    <div class="filter-select__container container">
+                                        <div class="filter-select__row">
+                                            <div class="filter-select__item">
+                                                <a href="volvo-xs90.html" class="filter-select__model">240 Series</a>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <a href="volvo-xs90.html" class="filter-select__model">S40</a>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <a href="volvo-xs90.html" class="filter-select__model">V40</a>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <a href="volvo-xs90.html" class="filter-select__model">460</a>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <a href="volvo-xs90.html" class="filter-select__model">S60</a>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <a href="volvo-xs90.html" class="filter-select__model">V90 Cross Country</a>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <a href="volvo-xs90.html" class="filter-select__model">740</a>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <a href="volvo-xs90.html" class="filter-select__model">S70</a>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <a href="volvo-xs90.html" class="filter-select__model">XC60</a>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <a href="volvo-xs90.html" class="filter-select__model">850</a>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <a href="volvo-xs90.html" class="filter-select__model">S80</a>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <a href="volvo-xs90.html" class="filter-select__model">XC70</a>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <a href="volvo-xs90.html" class="filter-select__model">940</a>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <a href="volvo-xs90.html" class="filter-select__model">S90</a>
+                                            </div>
+                                            <div class="filter-select__item">
+                                                <a href="volvo-xs90.html" class="filter-select__model">XC90</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter__service">
+                        <div class="filter__label filter__label--service">Популярные услуги:</div>
+                        <div class="filter__items">
+                            <?php
+                                $services = get_terms([
+                                    'taxonomy' => 'services',
+                                    'parent' => '0'
+                                ]);
+                            ?>
+                            <?php foreach ($services as $service){ ?>
+                                <a href="#<?php echo $service->slug; ?>" class="filter__item _active" data-slug="<?php echo $service->slug; ?>" data-term_id="<?php echo $service->term_id; ?>" data-term_taxonomy_id="<?php echo $service->term_taxonomy_id; ?>" data-taxonomy="<?php echo $service->taxonomy; ?>">
+                                    <div class="filter__item-wrapper"><?php echo $service->name; ?></div>
+                                </a>
+                            <?php } ?>
+                        </div>
+                        <div class="filter__buttons">
+                            <a href="" id="filterAll" class="filter__btn filter__all">Все услуги</a>
+                            <a href="" class="filter__btn filter__reset">Сбросить фильтры</a>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div class="service-page__content">
+                <div class="container">
+                    <div class="service-page__items">
+                        <div id="volvo-xs90-diagnostics" class="service-page__item" style="display: block;">
+                            <h2>Диагностика</h2>
+                            <figure class="block-table">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>Наименование услуги</th>
+                                        <th>Цена</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Замена масла и масляного фильтра в двигателе</td>
+                                        <td>500 руб.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Замена воздушного фильтра двигателя</td>
+                                        <td>100 руб.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Замена топливного фильтра </td>
+                                        <td>200 руб.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Замена фильтра салона*</td>
+                                        <td>300 руб.</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <figcaption><span>*</span> при его наличии в автомобиле</figcaption>
+                            </figure>
+                        </div>
+                        <div id="volvo-xs90-maintenance" class="service-page__item" style="display: block;">
+                            <h2>Техническое обслуживание</h2>
+                            <figure class="block-table">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>Наименование услуги</th>
+                                        <th>Цена</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Замена масла и масляного фильтра в двигателе</td>
+                                        <td>500 руб.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Замена воздушного фильтра двигателя</td>
+                                        <td>100 руб.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Замена топливного фильтра </td>
+                                        <td>200 руб.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Замена фильтра салона*</td>
+                                        <td>300 руб.</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <figcaption><span>*</span> при его наличии в автомобиле</figcaption>
+                            </figure>
+                        </div>
+                        <div id="volvo-xs90-tireFitting" class="service-page__item">
+                            <h2>Шиномонтаж</h2>
+                            <figure class="block-table">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>Наименование услуги</th>
+                                        <th>R12-R14</th>
+                                        <th>R15</th>
+                                        <th>R16</th>
+                                        <th>R17</th>
+                                        <th>R18</th>
+                                        <th>R19</th>
+                                        <th>R20-R23</th>
+                                        <th>от R26</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Снятие и установка 1 колеса</td>
+                                        <td>500 руб.</td>
+                                        <td>500 руб.</td>
+                                        <td>500 руб.</td>
+                                        <td>500 руб.</td>
+                                        <td>500 руб.</td>
+                                        <td>500 руб.</td>
+                                        <td>500 руб.</td>
+                                        <td>500 руб.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Монтаж/демонтаж 1 колеса</td>
+                                        <td>100 руб.</td>
+                                        <td>100 руб.</td>
+                                        <td>100 руб.</td>
+                                        <td>100 руб.</td>
+                                        <td>100 руб.</td>
+                                        <td>100 руб.</td>
+                                        <td>100 руб.</td>
+                                        <td>100 руб.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Монтаж/демонтаж 1 колеса RunFlat</td>
+                                        <td>200 руб.</td>
+                                        <td>200 руб.</td>
+                                        <td>200 руб.</td>
+                                        <td>200 руб.</td>
+                                        <td>200 руб.</td>
+                                        <td>200 руб.</td>
+                                        <td>200 руб.</td>
+                                        <td>200 руб.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Балансировка 1 колеса ( с учетом груза)</td>
+                                        <td>300 руб.</td>
+                                        <td>300 руб.</td>
+                                        <td>300 руб.</td>
+                                        <td>300 руб.</td>
+                                        <td>300 руб.</td>
+                                        <td>300 руб.</td>
+                                        <td>300 руб.</td>
+                                        <td>300 руб.</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <figcaption><span>*</span> при его наличии в автомобиле</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-page__request service-request">
+                <div class="service-request__container container">
+                    <div class="service-request__row row">
+                        <div class="service-request__content">
+                            <div class="service-request__content-wrapper">
+                                <h2 class="service-request__title title-h2">Записаться на осмотр</h2>
+                                <div class="service-request__text">Заполните эту форму и в самое ближайшее время с вами свяжется наш
+                                    сотрудник, который уточнит все детали и согласует с вами время осмотра</div>
+                                <div class="service-request__contact" data-da="service-request__row, last, 991">
+                                    <div class="service-request__label">Или свяжитесь с нами по телефону:</div>
+                                    <a href="tel:+79646226464" class="service-request__link"><span>+7 (964)</span> 622-64-64</a>
+                                    <div class="service-request__descr">(круглосуточно)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="service-request__form form">
+                            <form action="#" id="form" class="form__body">
+                                <div class="form__item">
+                                    <label for="serviceName" class="form__label">Ваше имя*:</label>
+                                    <input id="serviceName" type="text" name="name" class="form__input">
+                                </div>
+                                <div class="form__item">
+                                    <label for="serviceEmail" class="form__label">Контактный телефон*:</label>
+                                    <input id="serviceEmail" type="text" name="phone" class="form__input form__input--phone"
+                                           placeholder="+7 (___) ___-__-__">
+                                </div>
+                                <div class="form__item">
+                                    <label for="serviceEmail" class="form__label">Модель авто и год выпуска*:</label>
+                                    <input id="serviceEmail" type="text" name="phone" class="form__input"
+                                           placeholder="Volvo XC 90 ( 2007), T2.5, AWD">
+                                </div>
+
+                                <div class="form__item">
+                                    <div class="form__label">Тип работ:</div>
+                                    <select name="workType" class="form__select">
+                                        <option value="Комплексная диагностика" selected>Комплексная диагностика</option>
+                                        <option value="Кузовные работы">Кузовные работы</option>
+                                        <option value="Замена узлов и агрегатов">Замена узлов и агрегатов</option>
+                                    </select>
+                                </div>
+                                <div class="form__item form__item--full form__item--center">
+                                    <button type="submit" class="form__button btn">
+                                        <i class="icon-send"></i>
+                                        <span>Отправить</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <p>С другой стороны укрепление и развитие структуры обеспечивает участие в формировании систем массового участия. Равным образом консультация с широким активом требуют определения и уточнения модели развития. Разнообразный и богатый опыт консультация с широким активом обеспечивает широкому кругу. <br>
+                    Товарищи! постоянное информационно-пропагандистское обеспечение нашей деятельности позволяет выполнять важные задания по разработке модели развития. Таким образом реализация намеченных плановых заданий позволяет оценить значение новых предложений.</p>
+            </div>
+            
         </section>
         
     </main>
