@@ -234,8 +234,8 @@ get_header(); ?>
                             url: "<?php echo get_template_directory_uri(); ?>/services.php",
                             data: "get_services=1&car_parent="+car_parent+"&car_model="+car_model,
                             success: function(result){
-                                console.log(result);
                                 $("#loading-indicator").hide();
+                                $(".filter__service .filter__items").html(result);
                             }
                         });
                         
@@ -248,7 +248,6 @@ get_header(); ?>
                 <div class="filter__container container">
                     <div class="filter__car">
                         <div id="car_mark" class="filter__mark">
-                            
                             <div class="filter__label filter__label--car">Марка автомобиля:</div>
                             <?php
                                 $cars = get_terms([
@@ -263,7 +262,6 @@ get_header(); ?>
                                 }
                                 $cars_arr_letters = array_unique($cars_arr_letters);
                                 sort($cars_arr_letters);
-                            
                             ?>
                             <div class="filter__select filter-select">
                                 <div class="filter-select__title">
@@ -274,7 +272,6 @@ get_header(); ?>
                                 <div class="filter-select__options">
                                     <div class="filter-select__container container">
                                         <div class="filter-select__row">
-                                            
                                             <?php foreach ($cars_arr_letters as $letter){ ?>
                                                 <div class="filter-select__item">
                                                     <div class="filter-select__character"><?php echo $letter; ?></div>
@@ -287,12 +284,9 @@ get_header(); ?>
                                                     </div>
                                                 </div>
                                             <?php } ?>
-                                            
                                         </div>
-                                        
                                     </div>
                                 </div>
-                                
                             </div>
                         </div>
 
@@ -307,79 +301,20 @@ get_header(); ?>
                                 <div class="filter-select__options">
                                     <div class="filter-select__container container">
                                         <div class="filter-select__row">
-                                            
-                                            
-                                            
-                                            <div class="filter-select__item">
-                                                <a href="#240_Series" class="car_model filter-select__model">240 Series</a>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <a href="#S40" class="car_model filter-select__model">S40</a>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <a href="#V40" class="car_model filter-select__model">V40</a>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <a href="#460" class="car_model filter-select__model">460</a>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <a href="#S60" class="car_model filter-select__model">S60</a>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <a href="#V90_Cross_Country" class="car_model filter-select__model">V90 Cross Country</a>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <a href="#740" class="car_model filter-select__model">740</a>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <a href="#S70" class="car_model filter-select__model">S70</a>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <a href="#XC60" class="car_model filter-select__model">XC60</a>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <a href="#850" class="car_model filter-select__model">850</a>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <a href="#S80" class="car_model filter-select__model">S80</a>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <a href="#XC70" class="car_model filter-select__model">XC70</a>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <a href="#940" class="car_model filter-select__model">940</a>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <a href="#S90" class="car_model filter-select__model">S90</a>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <a href="#XC90" class="car_model filter-select__model">XC90</a>
-                                            </div>
-                                            
-                                            
-                                            
+                                            <!-- Здесь выводим дочерние модели -->
+                                            <!-- Здесь выводим дочерние модели КОНЕЦ -->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
                     </div>
 
                     <div class="filter__service">
                         <div class="filter__label filter__label--service">Популярные услуги:</div>
                         <div class="filter__items">
-                            <?php
-                                $services = get_terms([
-                                    'taxonomy' => 'services',
-                                    'parent' => '0'
-                                ]);
-                            ?>
-                            <?php foreach ($services as $service){ ?>
-                                <a href="#<?php echo $service->slug; ?>" class="filter__item _active" data-slug="<?php echo $service->slug; ?>" data-term_id="<?php echo $service->term_id; ?>" data-term_taxonomy_id="<?php echo $service->term_taxonomy_id; ?>" data-taxonomy="<?php echo $service->taxonomy; ?>">
-                                    <div class="filter__item-wrapper"><?php echo $service->name; ?></div>
-                                </a>
-                            <?php } ?>
+                            <!-- Здесь выводим родительские услуги -->
+                            <!-- Здесь выводим родительские услуги КОНЕЦ -->
                         </div>
                         <div class="filter__buttons">
                             <a href="" id="filterAll" class="filter__btn filter__all">Все услуги</a>

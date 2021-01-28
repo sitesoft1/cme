@@ -6154,7 +6154,7 @@ textarea.form__input {
 #loading-indicator {
   position: absolute;
   left: 49%;
-  top: 25%;
+  top: 58%;
   z-index: 1000;
 }
 .hide-loader{
@@ -6165,7 +6165,7 @@ textarea.form__input {
   #loading-indicator {
     position: absolute;
     left: 45%;
-    top: 15%;
+    top: 45%;
     z-index: 1000;
   }
 }

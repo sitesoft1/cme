@@ -23,13 +23,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         }
     }
     
-    //Получим доступные услоги
+    //Получим доступные услуги
     if( isset($_POST['get_services']) AND !empty($_POST['get_services']) ){
         
         $car_parent = (string) $_POST['car_parent'];
         $car_model = (string) $_POST['car_model'];
-    
-    
+        
         $query = new WP_Query( array(
             'tax_query' => array(
                 array(
@@ -39,17 +38,40 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 )
             )
         ) );
-        //var_dump($query->posts);
-        
         
         $object_ids = array();
         foreach ($query->posts as $post){
             $object_ids[] = $post->ID;
         }
-        //var_dump($object_ids);
-    
+        
         $object_terms = wp_get_object_terms( $object_ids, 'services');
-        var_dump($object_terms);
+        
+        if($object_terms){
+            $parents = [];
+            foreach ($object_terms as $object_term){
+                $parents[] = $object_term->parent;
+            }
+            array_unique($parents);
+    
+            $services = get_terms([
+                'taxonomy' => 'services',
+                'parent' => '0',
+                'term_taxonomy_id' => $parents,
+            ]);
+            
+            if($services){
+                $result = '';
+                foreach ($services as $service){
+                    $result .= '<a href="#'.$service->slug.'" class="filter__item _active" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
+                }
+                if(!empty($result)){
+                    echo $result;
+                    die();
+                }
+            }
+            
+        }
+        
     }
     
 }
