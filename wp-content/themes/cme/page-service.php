@@ -191,8 +191,22 @@ get_header(); ?>
                     <div class="filter__car">
                         <div class="filter__mark">
                             
-                            
                             <div class="filter__label filter__label--car">Марка автомобиля:</div>
+                            <?php
+                                $cars = get_terms([
+                                    'taxonomy' => 'cars',
+                                    'parent' => '0'
+                                ]);
+                                
+                                $cars_arr_letters = [];
+                                foreach ($cars as $car){
+                                    $first_letter = strtoupper(substr($car->name, 0, 1));
+                                    $cars_arr_letters[] = $first_letter;
+                                }
+                                $cars_arr_letters = array_unique($cars_arr_letters);
+                                sort($cars_arr_letters);
+                            
+                            ?>
                             <div class="filter__select filter-select">
                                 <div class="filter-select__title">
                                     <div class="filter-select__value">
@@ -202,60 +216,25 @@ get_header(); ?>
                                 <div class="filter-select__options">
                                     <div class="filter-select__container container">
                                         <div class="filter-select__row">
-                                            <div class="filter-select__item">
-                                                <div class="filter-select__character">A</div>
-                                                <div class="filter-select__links">
-                                                    <a href="volvo.html" class="filter-select__model">Acura</a>
-                                                    <a href="volvo.html" class="filter-select__model">Alfa Romeo</a>
-                                                    <a href="volvo.html" class="filter-select__model">Asia</a>
-                                                    <a href="volvo.html" class="filter-select__model">Aston Martin</a>
-                                                    <a href="volvo.html" class="filter-select__model">Audi</a>
+                                            
+                                            <?php foreach ($cars_arr_letters as $letter){ ?>
+                                                <div class="filter-select__item">
+                                                    <div class="filter-select__character"><?php echo $letter; ?></div>
+                                                    <div class="filter-select__links">
+                                                        <?php foreach ($cars as $car){ ?>
+                                                            <?php if ( $letter == strtoupper(substr($car->name, 0, 1)) ){ ?>
+                                                                <a href="#<?php echo $car->slug; ?>" class="filter-select__model" data-slug="<?php echo $car->slug; ?>" data-term_id="<?php echo $car->term_id; ?>" data-term_taxonomy_id="<?php echo $car->term_taxonomy_id; ?>" data-taxonomy="<?php echo $car->taxonomy; ?>"><?php echo $car->name; ?></a>
+                                                            <?php } ?>
+                                                        <?php } ?>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <div class="filter-select__character">B</div>
-                                                <div class="filter-select__links">
-                                                    <a href="volvo.html" class="filter-select__model">BMW</a>
-                                                    <a href="volvo.html" class="filter-select__model">BYD</a>
-                                                    <a href="volvo.html" class="filter-select__model">Bentley</a>
-                                                    <a href="volvo.html" class="filter-select__model">Brilliance</a>
-                                                    <a href="volvo.html" class="filter-select__model">Buick</a>
-                                                </div>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <div class="filter-select__character">C</div>
-                                                <div class="filter-select__links">
-                                                    <a href="volvo.html" class="filter-select__model">Cadillac</a>
-                                                    <a href="volvo.html" class="filter-select__model">Changan</a>
-                                                    <a href="volvo.html" class="filter-select__model">Chery</a>
-                                                    <a href="volvo.html" class="filter-select__model">Chevrolet</a>
-                                                    <a href="volvo.html" class="filter-select__model">Chrysler</a>
-                                                    <a href="volvo.html" class="filter-select__model">Citroen</a>
-                                                </div>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <div class="filter-select__character">D</div>
-                                                <div class="filter-select__links">
-                                                    <a href="volvo.html" class="filter-select__model">DW Hower</a>
-                                                    <a href="volvo.html" class="filter-select__model">Dacia</a>
-                                                    <a href="volvo.html" class="filter-select__model">Daewoo</a>
-                                                    <a href="volvo.html" class="filter-select__model">Daihatsu</a>
-                                                    <a href="volvo.html" class="filter-select__model">Datsun</a>
-                                                    <a href="volvo.html" class="filter-select__model">Dodge</a>
-                                                    <a href="volvo.html" class="filter-select__model">DongFeng</a>
-                                                </div>
-                                            </div>
-                                            <div class="filter-select__item">
-                                                <div class="filter-select__character">F</div>
-                                                <div class="filter-select__links">
-                                                    <a href="volvo.html" class="filter-select__model">FAW</a>
-                                                    <a href="volvo.html" class="filter-select__model">Fiat</a>
-                                                    <a href="volvo.html" class="filter-select__model">Ford</a>
-                                                </div>
-                                            </div>
+                                            <?php } ?>
+                                            
                                         </div>
+                                        
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
 
