@@ -3572,6 +3572,10 @@ textarea.form__input {
   background: #e42a2c url(../img/icons/service/reset.svg) no-repeat center;
 }
 
+.filter__reset_link::before {
+  background: #e42a2c url(../img/icons/service/reset.svg) no-repeat center;
+}
+
 .filter-select__title {
   border-bottom: 4px solid #e42a2c;
   padding: 10px 0;
