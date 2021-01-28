@@ -5,7 +5,7 @@ global $wpdb;
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     
     //Получим модели авто
-    if( isset($_POST['car_parent']) AND !empty($_POST['car_parent']) ){
+    if( isset($_POST['car_parent']) AND !empty($_POST['car_parent']) and isset($_POST['get_car_models']) ){
         $car_parent = (string) $_POST['car_parent'];
         $cars = get_terms([
             'taxonomy' => 'cars',

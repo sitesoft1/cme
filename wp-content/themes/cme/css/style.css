@@ -6151,6 +6151,25 @@ textarea.form__input {
 }
 }
 
+#loading-indicator {
+  position: absolute;
+  left: 49%;
+  top: 25%;
+  z-index: 1000;
+}
+.hide-loader{
+  display: none;
+}
+
+@media (max-width: 575px) {
+  #loading-indicator {
+    position: absolute;
+    left: 45%;
+    top: 15%;
+    z-index: 1000;
+  }
+}
+
 .webp .header { background: url(../img/menu-bg.webp) no-repeat center/cover; }
 
 .webp .schedule::before { background: url(../img/schedule/bg-1.webp) no-repeat center/cover; }

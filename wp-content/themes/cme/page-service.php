@@ -15,6 +15,10 @@ get_header(); ?>
         });
     </script>
 <?php } ?>
+
+   <!-- <img src="<?php echo get_template_directory_uri(); ?>/img/loader/ajax-loader.gif" id="loading-indicator" style="display:none" /> -->
+    
+    
     <header class="site__header header ">
         <div class="header__container container">
             <div class="header__body">
@@ -182,9 +186,11 @@ get_header(); ?>
                         <span>&nbsp;\&nbsp;</span>
                         <?php the_breadcrumb(); ?>
                     </div>
-                    <h1 class="breadcrumbs__title"><?php the_title(); // заголовок поста ?></h1>
+                    <h1 class="breadcrumbs__title"><?php the_title(); ?></h1>
                 </div>
             </div>
+
+            <img src="<?php echo get_template_directory_uri(); ?>/img/loader/ajax-loader.gif" height="66" width="66" id="loading-indicator" class="hide-loader" />
 
             <script>
                 $( document ).ready(function() {
@@ -196,28 +202,30 @@ get_header(); ?>
                     
                     $(".car_mark").on( "click", function() {
                         $("#car_mark .filter-select__value span").text( $(this).text() );
+                        $("#car_model .filter-select__value span").text("Модель:");
+                        $("#loading-indicator").show();
                         var car_parent = $(this).data("term_id");
                         
                         $.ajax({
                             type: "POST",
                             url: "<?php echo get_template_directory_uri(); ?>/services.php",
-                            data: "car_parent="+car_parent,
+                            data: "get_car_models=1&car_parent="+car_parent,
                             success: function(result){
-                                console.log(result);
                                 $("#car_model .filter-select__row").html(result);
                                 $("#car_model").show();
+                                $("#loading-indicator").hide();
                             }
                         });
                         
                     });
 
-                    $(".car_model").on( "click", function() {
-                        $("#car_model .filter-select__value span").text( $(this).text() );
+                    $("#car_model").on( "click", ".car_model", function() {
+                        $("#car_model .filter-select__value span").text($(this).text());
                         $(".filter__items").show();
                         $("#filterAll").show();
                         $(".filter__label--service").show();
-                        
                     });
+                    
                 });
             </script>
             
