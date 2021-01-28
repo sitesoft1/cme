@@ -224,6 +224,21 @@ get_header(); ?>
                         $(".filter__items").show();
                         $("#filterAll").show();
                         $(".filter__label--service").show();
+                        $("#loading-indicator").show();
+                        
+                        var car_parent = $(this).data("car_parent");
+                        var car_model = $(this).data("term_id");
+
+                        $.ajax({
+                            type: "POST",
+                            url: "<?php echo get_template_directory_uri(); ?>/services.php",
+                            data: "get_services=1&car_parent="+car_parent+"&car_model="+car_model,
+                            success: function(result){
+                                console.log(result);
+                                $("#loading-indicator").hide();
+                            }
+                        });
+                        
                     });
                     
                 });
