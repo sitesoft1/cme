@@ -74,10 +74,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     
     //Получим цены услуг
     if( isset($_POST['get_final_services']) AND !empty($_POST['get_final_services']) ){
-    
-        $result = array();
-        $result_string = '';
-    
+        
         $car_parent = (string) $_POST['car_parent'];
         $car_model = (string) $_POST['car_model'];
         
@@ -102,12 +99,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         
         if($query){
             
-           
+            $result = $item_header;
+            $result .= '<table><thead><tr><th>Наименование услуги</th><th>Цена</th></tr></thead><tbody>';
             foreach ($query->posts as $post){
                 $object_terms = wp_get_object_terms( $post->ID, 'services');
+                
                 foreach ($object_terms as $object_term){
                     if($parent_service_term_id == $object_term->parent){
-                        $result[$post->ID]['item_header'] = $item_header;
         
                         $prices_group = get_field( 'prices_group', $post->ID);
                         if(isset($prices_group) and !empty($prices_group)){
@@ -119,42 +117,24 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             
                             //Если цена одна
                             if(count($prices) == 1){
-                                $result[$post->ID]['item_table_header'] = '<table><thead><tr><th>Наименование услуги</th><th>'.$prices[0]['column_name'].'</th></tr></thead><tbody>';
-                                $result[$post->ID]['tr'] .= '<tr><td>'.$object_term->name.'</td><td>'.$prices[0]['price_value'].' руб.'.'</td></tr>';
+                                $result .= '<tr><td>'.$object_term->name.'</td><td>'.$prices[0]['price_value'].' руб.'.'</td></tr>';
                             }
             
             
                             //Если цен много
                             if(count($prices) > 1){
-                                $result[$post->ID]['item_table_header'] = '<table><thead><tr><th>Наименование услуги</th>';
-                                $result[$post->ID]['tr'] = '<tr>';
-                                $result[$post->ID]['tr'] .= '<td>'.$object_term->name.'</td>';
-                                foreach ($prices as $price){
-                                    $result[$post->ID]['item_table_header'] .= '<th>'.$price['column_name'].'</th>';
-                                    $result[$post->ID]['tr'] .= '<td>'.$price['price_value'].' руб.'.'</td>';
-                                }
-                                $result[$post->ID]['item_table_header'] .= '</tr></thead><tbody>';
-                                $result[$post->ID]['tr'] .= '</tr>';
+                                //echo 'услуга имеет много цен'.PHP_EOL;
                             }
             
                         }
-                        $result[$post->ID]['item_table_footer'] = '</tbody></table>';
-                        $result[$post->ID]['item_footer'] = $item_footer;
                     }
                 }
+                
             }
+            $result .= '</tbody></table>';
+            $result .= $item_footer;
             
-            //var_dump($result);
-            
-            foreach ($result as $k => $item){
-                $result_string .= $item['item_header'];
-                $result_string .= $item['item_table_header'];
-                $result_string .= $item['tr'];
-                $result_string .= $item['item_table_footer'];
-                $result_string .= $item['item_footer'];
-            }
-            
-            echo $result_string;
+            echo $result;
             die();
         }
         
