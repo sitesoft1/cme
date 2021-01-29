@@ -77,6 +77,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         
         $car_parent = (string) $_POST['car_parent'];
         $car_model = (string) $_POST['car_model'];
+        
         $parent_service_term_id = (string) $_POST['term_id'];
         $parent_service_slug = (string) $_POST['slug'];
         
@@ -101,42 +102,34 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $result = $item_header;
             $result .= '<table><thead><tr><th>Наименование услуги</th><th>Цена</th></tr></thead><tbody>';
             foreach ($query->posts as $post){
-                $object_term = wp_get_object_terms( $post->ID, 'services');
-                if($parent_service_term_id == $object_term[0]->parent){
-    
-                    $prices_group = get_field( 'prices_group', $post->ID);
-                    if(isset($prices_group) and !empty($prices_group)){
-                        $prices = $prices_group["prices"];
-                    }
-                    
-                    //Получили цены услуги
-                    if(isset($prices) and !empty($prices)){
-                        
-                        //Если цена одна
-                        if(count($prices) == 1){
-                            $result .= '<tr><td>'.$object_term[0]->name.'</td><td>'.$prices[0]['price_value'].' руб.'.'</td></tr>';
-                            //echo 'Услуга - '.$object_term[0]->name.' ее цена - '.$prices[0]['price_value'].' руб.'.PHP_EOL;
+                $object_terms = wp_get_object_terms( $post->ID, 'services');
+                
+                foreach ($object_terms as $object_term){
+                    if($parent_service_term_id == $object_term->parent){
+        
+                        $prices_group = get_field( 'prices_group', $post->ID);
+                        if(isset($prices_group) and !empty($prices_group)){
+                            $prices = $prices_group["prices"];
                         }
-                       
-                        
-                        //Если цен много
-                        if(count($prices) > 1){
-                            echo 'услуга имеет много цен'.PHP_EOL;
+        
+                        //Получили цены услуги
+                        if(isset($prices) and !empty($prices)){
+            
+                            //Если цена одна
+                            if(count($prices) == 1){
+                                $result .= '<tr><td>'.$object_term->name.'</td><td>'.$prices[0]['price_value'].' руб.'.'</td></tr>';
+                            }
+            
+            
+                            //Если цен много
+                            if(count($prices) > 1){
+                                //echo 'услуга имеет много цен'.PHP_EOL;
+                            }
+            
                         }
-    
-                        /*
-                        var_dump($prices_group);
-                        echo PHP_EOL;
-                        
-                        var_dump($prices);
-                        echo PHP_EOL;
-                        
-                        var_dump($post);
-                        echo PHP_EOL;
-                        var_dump($object_term);
-                        */
                     }
                 }
+                
             }
             $result .= '</tbody></table>';
             $result .= $item_footer;
