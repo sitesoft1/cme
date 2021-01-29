@@ -87,8 +87,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $parent_service_name = (string) $_POST['service_name'];
         $item_id = (string) $_POST['item_id'];
         
-        $item_header = '<div id="'.$item_id.'" class="service-page__item" style="display: block;"><h2>'.$parent_service_name.'</h2><figure class="block-table">';
-        $item_footer = '</figure></div>';
+        $item_header = '<div id="'.$item_id.'" class="service-page__item" style="display: block;"><h2>'.$parent_service_name.'</h2><figure class="block-table"><table>';
+        $item_footer = '</tbody></table></figure></div>';
     
         $query = new WP_Query( array(
             'tax_query' => array(
@@ -102,12 +102,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         
         if($query){
             
-           
             foreach ($query->posts as $post){
                 $object_terms = wp_get_object_terms( $post->ID, 'services');
+                
                 foreach ($object_terms as $object_term){
+                    
                     if($parent_service_term_id == $object_term->parent){
-                        $result[$post->ID]['item_header'] = $item_header;
+                        
+                        $result[$post->ID.'_'.$object_term->term_id]['item_header'] = $item_header;
         
                         $prices_group = get_field( 'prices_group', $post->ID);
                         if(isset($prices_group) and !empty($prices_group)){
@@ -119,40 +121,43 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             
                             //Если цена одна
                             if(count($prices) == 1){
-                                $result[$post->ID]['item_table_header'] = '<table><thead><tr><th>Наименование услуги</th><th>'.$prices[0]['column_name'].'</th></tr></thead><tbody>';
-                                $result[$post->ID]['tr'] .= '<tr><td>'.$object_term->name.'</td><td>'.$prices[0]['price_value'].' руб.'.'</td></tr>';
+                                $result[$post->ID.'_'.$object_term->term_id]['item_table_header'] = '<thead><tr><th>Наименование услуги</th><th>'.$prices[0]['column_name'].'</th></tr></thead><tbody>';
+                                $result[$post->ID.'_'.$object_term->term_id]['tr'] .= '<tr><td>'.$object_term->name.'</td><td>'.$prices[0]['price_value'].' руб.'.'</td></tr>';
                             }
             
             
                             //Если цен много
                             if(count($prices) > 1){
-                                $result[$post->ID]['item_table_header'] = '<table><thead><tr><th>Наименование услуги</th>';
-                                $result[$post->ID]['tr'] = '<tr>';
-                                $result[$post->ID]['tr'] .= '<td>'.$object_term->name.'</td>';
+                                $result[$post->ID.'_'.$object_term->term_id]['item_table_header'] = '<thead><tr><th>Наименование услуги</th>';
+                                $result[$post->ID.'_'.$object_term->term_id]['tr'] = '<tr>';
+                                $result[$post->ID.'_'.$object_term->term_id]['tr'] .= '<td>'.$object_term->name.'</td>';
                                 foreach ($prices as $price){
-                                    $result[$post->ID]['item_table_header'] .= '<th>'.$price['column_name'].'</th>';
-                                    $result[$post->ID]['tr'] .= '<td>'.$price['price_value'].' руб.'.'</td>';
+                                    $result[$post->ID.'_'.$object_term->term_id]['item_table_header'] .= '<th>'.$price['column_name'].'</th>';
+                                    $result[$post->ID.'_'.$object_term->term_id]['tr'] .= '<td>'.$price['price_value'].' руб.'.'</td>';
                                 }
-                                $result[$post->ID]['item_table_header'] .= '</tr></thead><tbody>';
-                                $result[$post->ID]['tr'] .= '</tr>';
+                                $result[$post->ID.'_'.$object_term->term_id]['item_table_header'] .= '</tr></thead><tbody>';
+                                $result[$post->ID.'_'.$object_term->term_id]['tr'] .= '</tr>';
                             }
             
                         }
-                        $result[$post->ID]['item_table_footer'] = '</tbody></table>';
-                        $result[$post->ID]['item_footer'] = $item_footer;
+                        //$result[$post->ID.'_'.$object_term->term_id]['item_table_footer'] = '</tbody></table>';
+                        $result[$post->ID.'_'.$object_term->term_id]['item_footer'] = $item_footer;
                     }
                 }
             }
             
             //var_dump($result);
-            
+            $result_string = $item_header;
+            $cnt=0;
             foreach ($result as $k => $item){
-                $result_string .= $item['item_header'];
-                $result_string .= $item['item_table_header'];
+                if($cnt == 0){
+                    $result_string .= $item['item_table_header'];
+                }
                 $result_string .= $item['tr'];
-                $result_string .= $item['item_table_footer'];
-                $result_string .= $item['item_footer'];
+                //$result_string .= $item['item_table_footer'];
+                $cnt++;
             }
+            $result_string .= $item_footer;
             
             echo $result_string;
             die();
