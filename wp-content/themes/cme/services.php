@@ -61,7 +61,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             if($services){
                 $result = '';
                 foreach ($services as $service){
-                    $result .= '<a href="#'.$service->slug.'" class="filter__item" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model.'" data-car_parent="'.$car_parent.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
+                    $result .= '<a href="#'.$service->slug.'" class="filter__item" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model.'" data-car_parent="'.$car_parent.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
                 }
                 if(!empty($result)){
                     echo $result;
@@ -81,7 +81,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $parent_service_slug = (string) $_POST['slug'];
         
         $parent_service_name = (string) $_POST['service_name'];
-        $item_header = '<div class="service-page__item" style="display: block;"><h2>'.$parent_service_name.'</h2><figure class="block-table">';
+        $item_id = (string) $_POST['item_id'];
+        
+        $item_header = '<div id="'.$item_id.'" class="service-page__item" style="display: block;"><h2>'.$parent_service_name.'</h2><figure class="block-table">';
         $item_footer = '</figure></div>';
     
         $query = new WP_Query( array(

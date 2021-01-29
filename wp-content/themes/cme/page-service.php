@@ -247,22 +247,29 @@ get_header(); ?>
                         var car_model = $(this).data('car_model');
                         var term_id = $(this).data('term_id');
                         var slug = $(this).data('slug');
-                        
                         var service_name = $(this).data('name');
-                        //var service_item_header = '<div class="service-page__item" style="display: block;"><h2>'+service_name+'</h2><figure class="block-table">';
-                        //var service_item_footer = '</figure></div>';
-
-                        $.ajax({
-                            type: "POST",
-                            url: "<?php echo get_template_directory_uri(); ?>/services.php",
-                            data: "get_final_services=1&car_parent="+car_parent+"&car_model="+car_model+"&term_id="+term_id+"&slug="+slug+"&service_name="+service_name,
-                            success: function(result){
-                                $("#loading-indicator").hide();
-                                console.log(result);
-                                $('.service-page__content .service-page__items').append(result);
-                            }
-                        });
+                        var item_id = slug+'_'+car_parent+'_'+car_model+'_'+term_id;
                         
+                        var show = $(this).data('show');
+                        show = +show;
+                        if( (show%2)==0 ){
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo get_template_directory_uri(); ?>/services.php",
+                                data: "get_final_services=1&car_parent="+car_parent+"&car_model="+car_model+"&term_id="+term_id+"&slug="+slug+"&service_name="+service_name+"&item_id="+item_id,
+                                success: function(result){
+                                    $("#loading-indicator").hide();
+                                    console.log(result);
+                                    $('.service-page__content .service-page__items').append(result);
+                                }
+                            });
+                        }else{
+                            document.getElementById(item_id).remove();
+                            $("#loading-indicator").hide();
+                        }
+                        
+                        show++;
+                        $(this).data('show', show);
                     });
                     
                 });
@@ -326,7 +333,6 @@ get_header(); ?>
                                     <div class="filter-select__container container">
                                         <div class="filter-select__row">
                                             <!-- Здесь выводим дочерние модели -->
-                                            <!-- Здесь выводим дочерние модели КОНЕЦ -->
                                         </div>
                                     </div>
                                 </div>
@@ -338,7 +344,6 @@ get_header(); ?>
                         <div class="filter__label filter__label--service">Выберите услугу:</div>
                         <div class="filter__items">
                             <!-- Здесь выводим родительские услуги -->
-                            <!-- Здесь выводим родительские услуги КОНЕЦ -->
                         </div>
                         <div class="filter__buttons">
                             <a href="" id="filterAll" class="filter__btn filter__all">Все услуги</a>
@@ -352,8 +357,9 @@ get_header(); ?>
                 
                 <div class="container">
                     <div class="service-page__items">
-
-
+                        
+                        <!-- Здесь выводим цены услуг -->
+                        
                         <!--
                         <div id="volvo-xs90-diagnostics" class="service-page__item" style="display: block;">
                             <h2>Диагностика</h2>
