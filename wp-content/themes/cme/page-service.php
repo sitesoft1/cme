@@ -198,6 +198,8 @@ get_header(); ?>
                     $(".filter__label--service").hide();
                     
                     $(".car_mark").on( "click", function() {
+                        $(".filter__service .filter__items").html('');
+                        $(".service-page__content .service-page__items").html('');
                         $("#car_mark .filter-select__value span").text( $(this).text() );
                         $("#car_model .filter-select__value span").text("Модель:");
                         $("#loading-indicator").show();
@@ -218,6 +220,7 @@ get_header(); ?>
 
                     $("#car_model").on( "click", ".car_model", function() {
                         $("#car_model .filter-select__value span").text($(this).text());
+                        $(".service-page__content .service-page__items").html('');
                         $(".filter__items").show();
                         $("#filterAll").show();
                         $(".filter__label--service").show();
@@ -354,7 +357,6 @@ get_header(); ?>
             </div>
 
             <div class="service-page__content">
-                
                 <div class="container">
                     <div class="service-page__items">
                         
