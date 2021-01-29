@@ -16,9 +16,6 @@ get_header(); ?>
     </script>
 <?php } ?>
 
-   <!-- <img src="<?php echo get_template_directory_uri(); ?>/img/loader/ajax-loader.gif" id="loading-indicator" style="display:none" /> -->
-    
-    
     <header class="site__header header ">
         <div class="header__container container">
             <div class="header__body">
@@ -239,6 +236,33 @@ get_header(); ?>
                             }
                         });
                         
+                        
+                    });
+
+                    $(".filter__items").on( "click", ".filter__item", function() {
+                        $(this).toggleClass('_active');
+                        $("#loading-indicator").show();
+                        
+                        var car_parent = $(this).data('car_parent');
+                        var car_model = $(this).data('car_model');
+                        var term_id = $(this).data('term_id');
+                        var slug = $(this).data('slug');
+                        
+                        var service_name = $(this).data('name');
+                        //var service_item_header = '<div class="service-page__item" style="display: block;"><h2>'+service_name+'</h2><figure class="block-table">';
+                        //var service_item_footer = '</figure></div>';
+
+                        $.ajax({
+                            type: "POST",
+                            url: "<?php echo get_template_directory_uri(); ?>/services.php",
+                            data: "get_final_services=1&car_parent="+car_parent+"&car_model="+car_model+"&term_id="+term_id+"&slug="+slug+"&service_name="+service_name,
+                            success: function(result){
+                                $("#loading-indicator").hide();
+                                console.log(result);
+                                $('.service-page__content .service-page__items').append(result);
+                            }
+                        });
+                        
                     });
                     
                 });
@@ -311,7 +335,7 @@ get_header(); ?>
                     </div>
 
                     <div class="filter__service">
-                        <div class="filter__label filter__label--service">Популярные услуги:</div>
+                        <div class="filter__label filter__label--service">Выберите услугу:</div>
                         <div class="filter__items">
                             <!-- Здесь выводим родительские услуги -->
                             <!-- Здесь выводим родительские услуги КОНЕЦ -->
@@ -325,11 +349,16 @@ get_header(); ?>
             </div>
 
             <div class="service-page__content">
+                
                 <div class="container">
                     <div class="service-page__items">
+
+
+                        <!--
                         <div id="volvo-xs90-diagnostics" class="service-page__item" style="display: block;">
                             <h2>Диагностика</h2>
                             <figure class="block-table">
+                                
                                 <table>
                                     <thead>
                                     <tr>
@@ -356,9 +385,9 @@ get_header(); ?>
                                     </tr>
                                     </tbody>
                                 </table>
-                                <figcaption><span>*</span> при его наличии в автомобиле</figcaption>
                             </figure>
                         </div>
+                        
                         <div id="volvo-xs90-maintenance" class="service-page__item" style="display: block;">
                             <h2>Техническое обслуживание</h2>
                             <figure class="block-table">
@@ -458,8 +487,12 @@ get_header(); ?>
                                 <figcaption><span>*</span> при его наличии в автомобиле</figcaption>
                             </figure>
                         </div>
+                        -->
+                        
                     </div>
+                    
                 </div>
+                
             </div>
 
             <div class="service-page__request service-request">
