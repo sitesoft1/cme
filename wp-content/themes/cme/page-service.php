@@ -33,27 +33,6 @@ $service_term_id = isset($_GET['service_term_id']) ? $_GET['service_term_id'] : 
 $services_terms = isset($_GET['services_terms']) ? $_GET['services_terms'] : array() ;
 
 $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : "";
-/*
-$page_query_string = $_SERVER['QUERY_STRING'];
-parse_str($page_query_string, $page_query_string_arr);
-
-echo '<pre>';
-var_dump($page_query_string_arr);
-echo '</pre>';
-
-unset($page_query_string_arr['services_terms']);
-
-echo '<pre>';
-var_dump($page_query_string_arr);
-echo '</pre>';
-
-$page_query_string = !empty($page_query_string_arr) ? $page_url.'?'.http_build_query($page_query_string_arr).'&' : $page_url.'?';
-
-echo '<pre>';
-var_dump($page_query_string);
-echo '</pre>';
-*/
-
 ?>
 <?php if($_SERVER['REQUEST_METHOD'] == 'POST'){ ?>
     <script>
@@ -320,7 +299,7 @@ echo '</pre>';
                                                   ]);
                                                   if ($cars) {
                                                       foreach ($cars as $car) { ?>
-                                                          <div class="filter-select__item"><a href="<?php echo $page_query_string; ?>car_model_slug=<?php echo $car->slug; ?>&car_model_name=<?php echo $car->name; ?>&car_model_term_id=<?php echo $car->term_id; ?>" data-slug="<?php echo $car->slug; ?>" data-term_id="<?php echo $car->term_id; ?>" data-term_taxonomy_id="<?php echo $car->term_taxonomy_id; ?>" data-taxonomy="<?php echo $car->taxonomy; ?>" data-car_parent="<?php echo $car_mark_term_id; ?>" class="car_model filter-select__model"><?php echo $car->name; ?></a></div>
+                                                          <div class="filter-select__item"><a href="?car_mark_slug=<?php echo $car_mark_slug; ?>&car_mark_name=<?php echo $car_mark_name; ?>&car_mark_term_id=<?php echo $car_mark_term_id; ?>&car_model_slug=<?php echo $car->slug; ?>&car_model_name=<?php echo $car->name; ?>&car_model_term_id=<?php echo $car->term_id; ?>" data-slug="<?php echo $car->slug; ?>" data-term_id="<?php echo $car->term_id; ?>" data-term_taxonomy_id="<?php echo $car->term_taxonomy_id; ?>" data-taxonomy="<?php echo $car->taxonomy; ?>" data-car_parent="<?php echo $car_mark_term_id; ?>" class="car_model filter-select__model"><?php echo $car->name; ?></a></div>
                                                       <?php }
                                                   }
                                               }
@@ -377,14 +356,12 @@ echo '</pre>';
                                                         $page_query_arr['services_terms'][] = $service->term_id;
                                                         $final_service_url = http_build_query($page_query_arr);
                                                         unset($page_query_arr['services_terms'][array_search($service->term_id, $page_query_arr['services_terms'])]);
-                                                    }else if(in_array($service->term_id, $page_query_arr['services_terms'])){
-                                                        unset($page_query_arr['services_terms'][array_search($service->term_id, $page_query_arr['services_terms'])]);
-                                                        $final_service_url = http_build_query($page_query_arr);
+                                                        echo '<a id="'.$service->term_id.'" href="?'.$final_service_url.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
                                                     }
                                                     else{
-                                                        $final_service_url = $page_query_string;
+                                                        echo '<a id="'.$service->term_id.'" href="'.$page_url.'#" onclick="history.back();" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
                                                     }
-                                                    echo '<a id="'.$service->term_id.'" href="?'.$final_service_url.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
+                                                    
                                                 }
                                             }
                                             
@@ -430,10 +407,12 @@ echo '</pre>';
                                                     $page_query_arr['services_terms'][] = $service->term_id;
                                                     $final_service_url = http_build_query($page_query_arr);
                                                     unset($page_query_arr['services_terms'][array_search($service->term_id, $page_query_arr['services_terms'])]);
-                                                }else{
-                                                    $final_service_url = $page_query_string;
+                                                    echo '<a id="'.$service->term_id.'" href="?'.$final_service_url.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
                                                 }
-                                                echo '<a id="'.$service->term_id.'" href="?'.$final_service_url.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
+                                                else{
+                                                    echo '<a id="'.$service->term_id.'" href="'.$page_url.'#" onclick="history.back();" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
+                                                }
+            
                                             }
                                         }
         
