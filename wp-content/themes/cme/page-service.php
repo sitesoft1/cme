@@ -127,7 +127,7 @@ get_header(); ?>
     
                     <?php
                     // Получим элементы меню на основе параметра $menu_name (тоже что и 'theme_location' или 'menu' в аргументах wp_nav_menu)
-                    // Этот код - основа функции wp_nav_menu, где получается ID меню из слага
+                    // Этот код - основа функции wp_nav_menu, где получается ID меню из слага.
     
                     $menu_name = 'top';
                     $locations = get_nav_menu_locations();

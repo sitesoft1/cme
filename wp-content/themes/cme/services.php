@@ -126,7 +126,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                             }
             
             
-                            //Если цен много
+                            //Если цен много.
                             if(count($prices) > 1){
                                 $result[$post->ID.'_'.$object_term->term_id]['item_table_header'] = '<thead><tr><th>Наименование услуги</th>';
                                 $result[$post->ID.'_'.$object_term->term_id]['tr'] = '<tr>';
