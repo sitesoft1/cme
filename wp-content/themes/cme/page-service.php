@@ -7,7 +7,52 @@
  * @subpackage your-clean-template-3
  */
 get_header(); ?>
-<?php $page_id = get_the_ID(); ?>
+<?php
+$page_id = get_the_ID();
+
+//echo '<pre>';
+    //var_dump($_GET['services_terms']);
+//echo '</pre>';
+
+$page_url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+$page_url = explode('?', $page_url);
+$page_url = $page_url[0];
+
+$car_mark_slug = isset($_GET['car_mark_slug']) ? $_GET['car_mark_slug'] : "" ;
+$car_mark_name = isset($_GET['car_mark_name']) ? $_GET['car_mark_name'] : "";
+$car_mark_term_id = isset($_GET['car_mark_term_id']) ? $_GET['car_mark_term_id'] : "" ;
+
+$car_model_slug = isset($_GET['car_model_slug']) ? $_GET['car_model_slug'] : "" ;
+$car_model_name = isset($_GET['car_model_name']) ? $_GET['car_model_name'] : "";
+$car_model_term_id = isset($_GET['car_model_term_id']) ? $_GET['car_model_term_id'] : "" ;
+
+$service_slug = isset($_GET['service_slug']) ? $_GET['service_slug'] : "" ;
+$service_name = isset($_GET['service_name']) ? $_GET['service_name'] : "";
+$service_term_id = isset($_GET['service_term_id']) ? $_GET['service_term_id'] : "" ;
+
+$services_terms = isset($_GET['services_terms']) ? $_GET['services_terms'] : array() ;
+
+//$page_query_string = !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'].'&' : '?' ;
+$page_query_string = $_SERVER['QUERY_STRING'];
+parse_str($page_query_string, $page_query_string_arr);
+
+echo '<pre>';
+var_dump($page_query_string_arr);
+echo '</pre>';
+
+unset($page_query_string_arr['services_terms']);
+
+echo '<pre>';
+var_dump($page_query_string_arr);
+echo '</pre>';
+
+$page_query_string = !empty($page_query_string_arr) ? '?'.http_build_query($page_query_string_arr).'&' : '?';
+
+echo '<pre>';
+var_dump($page_query_string);
+echo '</pre>';
+
+?>
 <?php if($_SERVER['REQUEST_METHOD'] == 'POST'){ ?>
     <script>
         $( document ).ready(function() {
@@ -192,17 +237,18 @@ get_header(); ?>
             <script>
                 $( document ).ready(function() {
                     $("#car_model").hide();
-                    $(".filter__items").hide();
-                    $("#filterAll").hide();
-                    $(".filter__label--service").hide();
                     
-                    <?php if( isset($_GET['car_mark_slug']) and !empty($_GET['car_mark_slug']) ){
-                        $car_mark_slug = isset($_GET['car_mark_slug']) ? $_GET['car_mark_slug'] : "" ;
-                        $car_mark_name = isset($_GET['car_mark_name']) ? $_GET['car_mark_name'] : "";
-                        $car_mark_term_id = isset($_GET['car_mark_term_id']) ? $_GET['car_mark_term_id'] : "" ;
-                    ?>
+                    <?php if( !empty($car_mark_name) ){ ?>
                         $("#car_model").show();
-                        $("#car_mark .filter-select__value span").text( "<?php echo $car_mark_name; ?>" );
+                        $("#car_mark .filter-select__value span").text("<?php echo $car_mark_name; ?>");
+                    <?php } ?>
+                    
+                    <?php if( !empty($car_model_name) ){ ?>
+                        $("#car_model .filter-select__value span").text("<?php echo $car_model_name; ?>");
+                    <?php } ?>
+    
+                    <?php if( !empty($service_term_id) ){ ?>
+                        $("#<?php echo $service_term_id; ?>").addClass("_active");
                     <?php } ?>
                 });
             </script>
@@ -272,7 +318,7 @@ get_header(); ?>
                                                   ]);
                                                   if ($cars) {
                                                       foreach ($cars as $car) { ?>
-                                                          <div class="filter-select__item"><a href="?<?php echo $_SERVER['QUERY_STRING']; ?>&car_model_slug=<?php echo $car->slug; ?>&car_model_name=<?php echo $car->name; ?>&car_model_term_id=<?php echo $car->term_id; ?>" data-slug="<?php echo $car->slug; ?>" data-term_id="<?php echo $car->term_id; ?>" data-term_taxonomy_id="<?php echo $car->term_taxonomy_id; ?>" data-taxonomy="<?php echo $car->taxonomy; ?>" data-car_parent="<?php echo $car_mark_term_id; ?>" class="car_model filter-select__model"><?php echo $car->name; ?></a></div>
+                                                          <div class="filter-select__item"><a href="<?php echo $page_query_string; ?>car_model_slug=<?php echo $car->slug; ?>&car_model_name=<?php echo $car->name; ?>&car_model_term_id=<?php echo $car->term_id; ?>" data-slug="<?php echo $car->slug; ?>" data-term_id="<?php echo $car->term_id; ?>" data-term_taxonomy_id="<?php echo $car->term_taxonomy_id; ?>" data-taxonomy="<?php echo $car->taxonomy; ?>" data-car_parent="<?php echo $car_mark_term_id; ?>" class="car_model filter-select__model"><?php echo $car->name; ?></a></div>
                                                       <?php }
                                                   }
                                               }
@@ -289,10 +335,118 @@ get_header(); ?>
                         <div class="filter__label filter__label--service">Выберите услугу:</div>
                         <div class="filter__items">
                             <!-- Здесь выводим родительские услуги -->
+                                <?php
+                                
+                                        $posts = get_posts( [
+                                            'tax_query' => [
+                                                [
+                                                    'taxonomy' => 'cars',
+                                                    'operator' => 'NOT EXISTS',
+                                                ]
+                                            ],
+                                            'post_type' => 'service_price',
+                                            'posts_per_page' => -1
+                                        ] );
+    
+                                        $object_ids = array();
+                                        foreach ($posts as $post){
+                                            $object_ids[] = $post->ID;
+                                        }
+    
+                                        $object_terms = wp_get_object_terms( $object_ids, 'services');
+
+                                        if($object_terms){
+                                            $parents = [];
+                                            foreach ($object_terms as $object_term){
+                                                $parents[] = $object_term->parent;
+                                            }
+                                            array_unique($parents);
+    
+                                            $services = get_terms([
+                                                'taxonomy' => 'services',
+                                                'parent' => '0',
+                                                'term_taxonomy_id' => $parents,
+                                            ]);
+    
+                                            if($services){
+                                                foreach ($services as $service){
+                                                    if(!in_array($service->term_id, $services_terms)) {
+                                                        $new_services_terms = $services_terms;
+                                                        $new_services_terms[] = $service->term_id;
+                                                        $services_terms_url = http_build_query(array('services_terms' => $new_services_terms));
+                                                    }else{
+                                                        $new_services_terms = $services_terms;
+                                                        unset($new_services_terms[array_search($service->term_id, $new_services_terms)]);
+                                                        $services_terms_url = !empty($new_services_terms) ? http_build_query(array('services_terms'=>$new_services_terms)) : "";
+                                                    }
+                                                    //echo '<a id="'.$service->term_id.'" href="'.$page_query_string.'service_slug='.$service->slug.'&service_term_id='.$service->term_id.'&service_name='.$service->name.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
+                                                    echo '<a id="'.$service->term_id.'" href="'.$page_query_string.$services_terms_url.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
+                                                }
+                                            }
+                                            
+                                            
+                                        }
+
+                                if(!empty($car_model_term_id)) {
+    
+                                    $query = new WP_Query(array(
+                                        'tax_query' => array(
+                                            array(
+                                                'taxonomy' => 'cars',
+                                                'field' => 'term_id',
+                                                'terms' => $car_model_term_id
+                                            )
+                                        )
+                                    ));
+    
+                                    $object_ids = array();
+                                    foreach ($query->posts as $post) {
+                                        $object_ids[] = $post->ID;
+                                    }
+    
+                                    $object_terms = wp_get_object_terms($object_ids, 'services');
+    
+                                    if ($object_terms) {
+                                        $parents = [];
+                                        foreach ($object_terms as $object_term) {
+                                            $parents[] = $object_term->parent;
+                                        }
+                                        array_unique($parents);
+        
+                                        $services = get_terms([
+                                            'taxonomy' => 'services',
+                                            'parent' => '0',
+                                            'term_taxonomy_id' => $parents,
+                                        ]);
+        
+                                        if ($services) {
+                                            foreach ($services as $service) {
+                                                if(!in_array($service->term_id, $services_terms)) {
+                                                    $new_services_terms = $services_terms;
+                                                    $new_services_terms[] = $service->term_id;
+                                                    $services_terms_url = http_build_query(array('services_terms' => $new_services_terms));
+                                                }else{
+                                                    $new_services_terms = $services_terms;
+                                                    unset($new_services_terms[array_search($service->term_id, $new_services_terms)]);
+                                                    $services_terms_url = !empty($new_services_terms) ? http_build_query(array('services_terms'=>$new_services_terms)) : "";
+                                                }
+                                                //echo '<a id="'.$service->term_id.'" href="'.$page_query_string.'service_slug='.$service->slug.'&service_term_id='.$service->term_id.'&service_name='.$service->name.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
+                                                echo '<a id="'.$service->term_id.'" href="'.$page_query_string.$services_terms_url.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
+                                            }
+                                        }
+        
+        
+                                    }
+                                }
+                                        
+                                
+                                ?>
+                            <!-- Здесь выводим родительские услуги КОНЕЦ -->
                         </div>
                         <div class="filter__buttons">
                             <a href="" id="filterAll" class="filter__btn filter__all">Все услуги</a>
-                            <a href="<?php echo get_page_link(); ?>" class="filter__btn filter__reset_link">Сбросить фильтры</a>
+                            
+                            <a href="<?php echo $page_url; ?>" class="filter__btn filter__reset_link">Сбросить фильтры</a>
                         </div>
                     </div>
                 </div>
@@ -499,8 +653,23 @@ get_header(); ?>
             </div>
 
             <div class="container">
-                <p>С другой стороны укрепление и развитие структуры обеспечивает участие в формировании систем массового участия. Равным образом консультация с широким активом требуют определения и уточнения модели развития. Разнообразный и богатый опыт консультация с широким активом обеспечивает широкому кругу. <br>
-                    Товарищи! постоянное информационно-пропагандистское обеспечение нашей деятельности позволяет выполнять важные задания по разработке модели развития. Таким образом реализация намеченных плановых заданий позволяет оценить значение новых предложений.</p>
+                <?php
+                if(!empty($car_mark_term_id) and empty($car_model_term_id)){
+                   $auto_repair_text = get_field('auto_repair_text', 'cars_'.$car_mark_term_id);
+                   $auto_repair_text = empty($auto_repair_text) ? get_field('field_60193e4c516b8') : $auto_repair_text;
+                   $auto_repair_text = str_replace('{{mark}}', $car_mark_name, $auto_repair_text);
+                   $auto_repair_text = !empty($car_model_name) ? str_replace('{{model}}', ' '.$car_model_name, $auto_repair_text) : str_replace('{{model}}', '', $auto_repair_text);
+                   echo $auto_repair_text;
+                }else if(!empty($car_model_term_id)){
+                    $auto_repair_text = get_field('auto_repair_text', 'cars_'.$car_model_term_id);
+                    $auto_repair_text = empty($auto_repair_text) ? get_field('field_60193e4c516b8') : $auto_repair_text;
+                    $auto_repair_text = str_replace('{{mark}}', $car_mark_name, $auto_repair_text);
+                    $auto_repair_text = !empty($car_model_name) ? str_replace('{{model}}', ' '.$car_model_name, $auto_repair_text) : str_replace('{{model}}', '', $auto_repair_text);
+                    echo $auto_repair_text;
+                }else{
+                    the_content();
+                }
+                ?>
             </div>
             
         </section>

@@ -3507,6 +3507,25 @@ textarea.form__input {
   border-color: #e42a2c;
 }
 
+.filter__item2 {
+  font-size: 12px;
+  line-height: 16px;
+  text-decoration: none;
+  padding-top: calc(3px + 7 * ((100vw - 320px) / (1600)));
+  padding-right: calc(5px + 5 * ((100vw - 320px) / (1600)));
+  padding-bottom: calc(3px + 7 * ((100vw - 320px) / (1600)));
+  padding-left: calc(5px + 5 * ((100vw - 320px) / (1600)));
+  -webkit-transition: 0.3s ease all 0s;
+  -o-transition: 0.3s ease all 0s;
+  transition: 0.3s ease all 0s;
+}
+
+.filter__item2._active .filter__item-wrapper {
+  background-color: #e42a2c;
+  color: #fff;
+  border-color: #e42a2c;
+}
+
 .filter__item-wrapper {
   background-color: #f8f8f8;
   border: 1px solid #373738;
