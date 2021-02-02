@@ -192,18 +192,89 @@ get_header(); ?>
             <script>
                 $( document ).ready(function() {
                     $("#car_model").hide();
+                    
                     $(".filter__items").hide();
                     $("#filterAll").hide();
                     $(".filter__label--service").hide();
                     
-                    <?php if( isset($_GET['car_mark_slug']) and !empty($_GET['car_mark_slug']) ){
-                        $car_mark_slug = isset($_GET['car_mark_slug']) ? $_GET['car_mark_slug'] : "" ;
-                        $car_mark_name = isset($_GET['car_mark_name']) ? $_GET['car_mark_name'] : "";
-                        $car_mark_term_id = isset($_GET['car_mark_term_id']) ? $_GET['car_mark_term_id'] : "" ;
-                    ?>
-                        $("#car_model").show();
-                        $("#car_mark .filter-select__value span").text( "<?php echo $car_mark_name; ?>" );
-                    <?php } ?>
+                    $(".car_mark").on( "click", function() {
+                        $(".filter__service .filter__items").html('');
+                        $(".service-page__content .service-page__items").html('');
+                        $("#car_mark .filter-select__value span").text( $(this).text() );
+                        $("#car_model .filter-select__value span").text("Модель:");
+                        $("#loading-indicator").show();
+                        var car_parent = $(this).data("term_id");
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: "<?php echo get_template_directory_uri(); ?>/services.php",
+                            data: "get_car_models=1&car_parent="+car_parent,
+                            success: function(result){
+                                $("#car_model .filter-select__row").html(result);
+                                $("#car_model").show();
+                                $("#loading-indicator").hide();
+                            }
+                        });
+                        
+                    });
+
+                    $("#car_model").on( "click", ".car_model", function() {
+                        $("#car_model .filter-select__value span").text($(this).text());
+                        $(".service-page__content .service-page__items").html('');
+                        $(".filter__items").show();
+                        $("#filterAll").show();
+                        $(".filter__label--service").show();
+                        $("#loading-indicator").show();
+                        
+                        var car_parent = $(this).data("car_parent");
+                        var car_model = $(this).data("term_id");
+
+                        $.ajax({
+                            type: "POST",
+                            url: "<?php echo get_template_directory_uri(); ?>/services.php",
+                            data: "get_services=1&car_parent="+car_parent+"&car_model="+car_model,
+                            success: function(result){
+                                $("#loading-indicator").hide();
+                                $(".filter__service .filter__items").html(result);
+                            }
+                        });
+                        
+                        
+                    });
+
+                    $(".filter__items").on( "click", ".filter__item", function() {
+                        $(this).toggleClass('_active');
+                        $("#loading-indicator").show();
+                        
+                        var car_parent = $(this).data('car_parent');
+                        var car_model = $(this).data('car_model');
+                        var term_id = $(this).data('term_id');
+                        var slug = $(this).data('slug');
+                        var service_name = $(this).data('name');
+                        var item_id = slug+'_'+car_parent+'_'+car_model+'_'+term_id;
+                        
+                        var show = $(this).data('show');
+                        show = +show;
+                        if( (show%2)==0 ){
+                            $.ajax({
+                                type: "POST",
+                                url: "<?php echo get_template_directory_uri(); ?>/services.php",
+                                data: "get_final_services=1&car_parent="+car_parent+"&car_model="+car_model+"&term_id="+term_id+"&slug="+slug+"&service_name="+service_name+"&item_id="+item_id,
+                                success: function(result){
+                                    $("#loading-indicator").hide();
+                                    console.log(result);
+                                    $('.service-page__content .service-page__items').append(result);
+                                }
+                            });
+                        }else{
+                            document.getElementById(item_id).remove();
+                            $("#loading-indicator").hide();
+                        }
+                        
+                        show++;
+                        $(this).data('show', show);
+                    });
+                    
                 });
             </script>
             
@@ -220,7 +291,7 @@ get_header(); ?>
                                 
                                 $cars_arr_letters = [];
                                 foreach ($cars as $car){
-                                    $first_letter = mb_strtoupper(mb_substr($car->name, 0, 1));
+                                    $first_letter = strtoupper(substr($car->name, 0, 1));
                                     $cars_arr_letters[] = $first_letter;
                                 }
                                 $cars_arr_letters = array_unique($cars_arr_letters);
@@ -240,8 +311,8 @@ get_header(); ?>
                                                     <div class="filter-select__character"><?php echo $letter; ?></div>
                                                     <div class="filter-select__links">
                                                         <?php foreach ($cars as $car){ ?>
-                                                            <?php if ( $letter == mb_strtoupper(mb_substr($car->name, 0, 1)) ){ ?>
-                                                                <a href="?car_mark_slug=<?php echo $car->slug; ?>&car_mark_name=<?php echo $car->name; ?>&car_mark_term_id=<?php echo $car->term_id; ?>" class="car_mark filter-select__model" data-slug="<?php echo $car->slug; ?>" data-term_id="<?php echo $car->term_id; ?>" data-term_taxonomy_id="<?php echo $car->term_taxonomy_id; ?>" data-taxonomy="<?php echo $car->taxonomy; ?>"><?php echo $car->name; ?></a>
+                                                            <?php if ( $letter == strtoupper(substr($car->name, 0, 1)) ){ ?>
+                                                                <a href="#<?php echo $car->slug; ?>" class="car_mark filter-select__model" data-slug="<?php echo $car->slug; ?>" data-term_id="<?php echo $car->term_id; ?>" data-term_taxonomy_id="<?php echo $car->term_taxonomy_id; ?>" data-taxonomy="<?php echo $car->taxonomy; ?>"><?php echo $car->name; ?></a>
                                                             <?php } ?>
                                                         <?php } ?>
                                                     </div>
@@ -258,26 +329,13 @@ get_header(); ?>
                             <div class="filter__select filter-select filter-select--model">
                                 <div class="filter-select__title">
                                     <div class="filter-select__value">
-                                        <span>Выберите модель:</span>
+                                        <span>Модель:</span>
                                     </div>
                                 </div>
                                 <div class="filter-select__options">
                                     <div class="filter-select__container container">
                                         <div class="filter-select__row">
                                             <!-- Здесь выводим дочерние модели -->
-                                              <?php if( isset($car_mark_term_id) and !empty($car_mark_term_id) ) {
-                                                  $cars = get_terms([
-                                                      'taxonomy' => 'cars',
-                                                      'parent' => $car_mark_term_id
-                                                  ]);
-                                                  if ($cars) {
-                                                      foreach ($cars as $car) { ?>
-                                                          <div class="filter-select__item"><a href="?<?php echo $_SERVER['QUERY_STRING']; ?>&car_model_slug=<?php echo $car->slug; ?>&car_model_name=<?php echo $car->name; ?>&car_model_term_id=<?php echo $car->term_id; ?>" data-slug="<?php echo $car->slug; ?>" data-term_id="<?php echo $car->term_id; ?>" data-term_taxonomy_id="<?php echo $car->term_taxonomy_id; ?>" data-taxonomy="<?php echo $car->taxonomy; ?>" data-car_parent="<?php echo $car_mark_term_id; ?>" class="car_model filter-select__model"><?php echo $car->name; ?></a></div>
-                                                      <?php }
-                                                  }
-                                              }
-                                              ?>
-                                            <!-- Здесь выводим дочерние модели КОНЕЦ -->
                                         </div>
                                     </div>
                                 </div>
