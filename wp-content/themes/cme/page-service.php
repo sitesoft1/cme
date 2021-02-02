@@ -32,7 +32,8 @@ $service_term_id = isset($_GET['service_term_id']) ? $_GET['service_term_id'] : 
 
 $services_terms = isset($_GET['services_terms']) ? $_GET['services_terms'] : array() ;
 
-//$page_query_string = !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'].'&' : '?' ;
+$page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : "";
+/*
 $page_query_string = $_SERVER['QUERY_STRING'];
 parse_str($page_query_string, $page_query_string_arr);
 
@@ -51,6 +52,7 @@ $page_query_string = !empty($page_query_string_arr) ? $page_url.'?'.http_build_q
 echo '<pre>';
 var_dump($page_query_string);
 echo '</pre>';
+*/
 
 ?>
 <?php if($_SERVER['REQUEST_METHOD'] == 'POST'){ ?>
@@ -369,18 +371,20 @@ echo '</pre>';
                                             ]);
     
                                             if($services){
+                                                parse_str($page_query_string, $page_query_arr);
                                                 foreach ($services as $service){
-                                                    if(!in_array($service->term_id, $services_terms)) {
-                                                        $new_services_terms = $services_terms;
-                                                        $new_services_terms[] = $service->term_id;
-                                                        $services_terms_url = http_build_query(array('services_terms' => $new_services_terms));
-                                                    }else{
-                                                        $new_services_terms = $services_terms;
-                                                        unset($new_services_terms[array_search($service->term_id, $new_services_terms)]);
-                                                        $services_terms_url = !empty($new_services_terms) ? http_build_query(array('services_terms'=>$new_services_terms)) : "";
+                                                    if(!isset($page_query_arr['services_terms']) or !in_array($service->term_id, $page_query_arr['services_terms'])) {
+                                                        $page_query_arr['services_terms'][] = $service->term_id;
+                                                        $final_service_url = http_build_query($page_query_arr);
+                                                        unset($page_query_arr['services_terms'][array_search($service->term_id, $page_query_arr['services_terms'])]);
+                                                    }else if(in_array($service->term_id, $page_query_arr['services_terms'])){
+                                                        unset($page_query_arr['services_terms'][array_search($service->term_id, $page_query_arr['services_terms'])]);
+                                                        $final_service_url = http_build_query($page_query_arr);
                                                     }
-                                                    $final_service_url = $page_query_string.$services_terms_url;
-                                                    echo '<a id="'.$service->term_id.'" href="'.$final_service_url.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
+                                                    else{
+                                                        $final_service_url = $page_query_string;
+                                                    }
+                                                    echo '<a id="'.$service->term_id.'" href="?'.$final_service_url.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
                                                 }
                                             }
                                             
@@ -418,20 +422,18 @@ echo '</pre>';
                                             'parent' => '0',
                                             'term_taxonomy_id' => $parents,
                                         ]);
-        
-                                        if ($services) {
-                                            foreach ($services as $service) {
-                                                if(!in_array($service->term_id, $services_terms)) {
-                                                    $new_services_terms = $services_terms;
-                                                    $new_services_terms[] = $service->term_id;
-                                                    $services_terms_url = http_build_query(array('services_terms' => $new_services_terms));
+    
+                                        if($services){
+                                            parse_str($page_query_string, $page_query_arr);
+                                            foreach ($services as $service){
+                                                if(!isset($page_query_arr['services_terms']) or !in_array($service->term_id, $page_query_arr['services_terms'])) {
+                                                    $page_query_arr['services_terms'][] = $service->term_id;
+                                                    $final_service_url = http_build_query($page_query_arr);
+                                                    unset($page_query_arr['services_terms'][array_search($service->term_id, $page_query_arr['services_terms'])]);
                                                 }else{
-                                                    $new_services_terms = $services_terms;
-                                                    unset($new_services_terms[array_search($service->term_id, $new_services_terms)]);
-                                                    $services_terms_url = !empty($new_services_terms) ? http_build_query(array('services_terms'=>$new_services_terms)) : "";
+                                                    $final_service_url = $page_query_string;
                                                 }
-                                                $final_service_url = $page_query_string.$services_terms_url;
-                                                echo '<a id="'.$service->term_id.'" href="'.$final_service_url.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
+                                                echo '<a id="'.$service->term_id.'" href="?'.$final_service_url.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
                                             }
                                         }
         
