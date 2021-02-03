@@ -495,6 +495,7 @@ $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING']
                                 $object_terms = array();
                                 $services_posts_ids = array();
                                 foreach ($services_posts as $service_post){
+                                    $services_posts_ids[] = $service_post->ID;
                                     $terms = wp_get_object_terms($service_post->ID, 'services');
                                     foreach ($terms as $term){
                                         if($term->parent != 0 and in_array($term->parent, $services_terms)){
@@ -611,7 +612,18 @@ $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING']
                     $auto_repair_text = str_replace('{{mark}}', $car_mark_name, $auto_repair_text);
                     $auto_repair_text = !empty($car_model_name) ? str_replace('{{model}}', ' '.$car_model_name, $auto_repair_text) : str_replace('{{model}}', '', $auto_repair_text);
                     echo $auto_repair_text;
-                }else{
+                }else if(count($services_terms)==1){
+                    foreach ($services_posts_ids as $post_id){
+                        $content = get_the_content( NULL, false, $post_id);
+                        if($content and strlen($content)>5){
+                            //$content = str_replace('{{mark}}', $car_mark_name, $content);
+                            //$content = !empty($car_model_name) ? str_replace('{{model}}', ' '.$car_model_name, $content) : str_replace('{{model}}', '', $content);
+                            echo $content;
+                            break;
+                        }
+                    }
+                }
+                else{
                     echo get_the_content( NULL, false, $page_id );
                 }
                 ?>
