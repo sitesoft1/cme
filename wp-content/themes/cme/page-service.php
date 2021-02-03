@@ -585,7 +585,7 @@ $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING']
                                 <div class="form__item">
                                     <label for="serviceEmail" class="form__label">Модель авто и год выпуска*:</label>
                                     <input id="serviceEmail" type="text" name="phone" class="form__input"
-                                           placeholder="Volvo XC 90 ( 2007), T2.5, AWD">
+                                           placeholder="Volvo XC 90 ( 2007), T2.5, AWD" value="<?php echo !empty($car_mark_name) ? $car_mark_name.' ' : ''; ?><?php echo !empty($car_model_name) ? $car_model_name.' ' : ''; ?>">
                                 </div>
 
                                 <div class="form__item">
