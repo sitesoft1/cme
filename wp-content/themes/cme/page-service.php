@@ -445,72 +445,71 @@ $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING']
             <div class="service-page__content">
                 <div class="container">
                     <div class="service-page__items">
-                        
-                        <!-- Здесь выводим цены услуг -->
-                        
+                    
+                    <!-- Здесь выводим цены услуг -->
                         <?php
                         
-                        if(!empty($car_model_term_id)){
-                            
-                            //Получим услуги по выбранной модели авто
-                            $services_posts = get_posts( [
-                                'tax_query' => [
-                                    [
-                                        'taxonomy' => 'cars',
-                                        'field'    => 'term_id',
-                                        'field'    => 'term_id',
-                                        'terms'    => $car_model_term_id
-                                    ]
-                                ],
-                                'post_type' => 'service_price',
-                                'posts_per_page' => -1
-                            ] );
-    
-                            $object_terms = array();
-                            $services_posts_ids = array();
-                            foreach ($services_posts as $service_post){
-                                $terms = wp_get_object_terms($service_post->ID, 'services');
-                                foreach ($terms as $term){
-                                    if($term->parent != 0 and in_array($term->parent, $services_terms)){
-                                        $term->post_id = $service_post->ID;
-                                        $term->price = get_field('price', $service_post->ID);
-                                        $term->notation = get_field('notation', $service_post->ID);
-                                        $show_terms[$term->parent][] = $term;
+                            if(!empty($services_terms)){
+                                if(!empty($car_model_term_id)){
+                                    //Получим услуги по выбранной модели авто
+                                    $services_posts = get_posts( [
+                                        'tax_query' => [
+                                            [
+                                                'taxonomy' => 'cars',
+                                                'field'    => 'term_id',
+                                                'field'    => 'term_id',
+                                                'terms'    => $car_model_term_id
+                                            ]
+                                        ],
+                                        'post_type' => 'service_price',
+                                        'posts_per_page' => -1
+                                    ] );
+            
+                                    $object_terms = array();
+                                    $services_posts_ids = array();
+                                    foreach ($services_posts as $service_post){
+                                        $terms = wp_get_object_terms($service_post->ID, 'services');
+                                        foreach ($terms as $term){
+                                            if($term->parent != 0 and in_array($term->parent, $services_terms)){
+                                                $term->post_id = $service_post->ID;
+                                                $term->price = get_field('price', $service_post->ID);
+                                                $term->notation = get_field('notation', $service_post->ID);
+                                                $show_terms[$term->parent][] = $term;
+                                            }
+                                        }
+                                    }
+                                }
+        
+                                //Получим услуги по пустой модели авто
+                                $services_posts = get_posts( [
+                                    'tax_query' => [
+                                        [
+                                            'taxonomy' => 'cars',
+                                            'operator' => 'NOT EXISTS',
+                                        ]
+                                    ],
+                                    'post_type' => 'service_price',
+                                    'posts_per_page' => -1
+                                ] );
+        
+                                $object_terms = array();
+                                $services_posts_ids = array();
+                                foreach ($services_posts as $service_post){
+                                    $terms = wp_get_object_terms($service_post->ID, 'services');
+                                    foreach ($terms as $term){
+                                        if($term->parent != 0 and in_array($term->parent, $services_terms)){
+                                            $term->post_id = $service_post->ID;
+                                            $term->price = get_field('price', $service_post->ID);
+                                            $term->notation = get_field('notation', $service_post->ID);
+                                            $show_terms[$term->parent][] = $term;
+                                        }
                                     }
                                 }
                             }
-                            //die();
-    
-                            //Получим услуги по пустой модели авто
-                            $services_posts = get_posts( [
-                                'tax_query' => [
-                                    [
-                                        'taxonomy' => 'cars',
-                                        'operator' => 'NOT EXISTS',
-                                    ]
-                                ],
-                                'post_type' => 'service_price',
-                                'posts_per_page' => -1
-                            ] );
-    
-                            $object_terms = array();
-                            $services_posts_ids = array();
-                            foreach ($services_posts as $service_post){
-                                $terms = wp_get_object_terms($service_post->ID, 'services');
-                                foreach ($terms as $term){
-                                    if($term->parent != 0 and in_array($term->parent, $services_terms)){
-                                        $term->post_id = $service_post->ID;
-                                        $term->price = get_field('price', $service_post->ID);
-                                        $term->notation = get_field('notation', $service_post->ID);
-                                        $show_terms[$term->parent][] = $term;
-                                    }
-                                }
-                            }
                             
-                        }
                         ?>
 
-                        <?php foreach ($show_terms as $parent_term_id => $terms){
+                        <?php if(isset($show_terms)){ foreach ($show_terms as $parent_term_id => $terms){
                             $parent_term = get_term($parent_term_id, 'services');
                             ?>
                             <div id="<?php echo $parent_term_id; ?>" class="service-page__item" style="display: block;">
@@ -536,143 +535,9 @@ $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING']
                                     </table>
                                 </figure>
                             </div>
-                        <?php } ?>
-                        
-                        <!--
-                        <div id="volvo-xs90-diagnostics" class="service-page__item" style="display: block;">
-                            <h2>Диагностика</h2>
-                            <figure class="block-table">
-                                
-                                <table>
-                                    <thead>
-                                    <tr>
-                                        <th>Наименование услуги</th>
-                                        <th>Цена</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>Замена масла и масляного фильтра в двигателе</td>
-                                        <td>500 руб.</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Замена воздушного фильтра двигателя</td>
-                                        <td>100 руб.</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Замена топливного фильтра </td>
-                                        <td>200 руб.</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Замена фильтра салона*</td>
-                                        <td>300 руб.</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </figure>
-                        </div>
-                        
-                        <div id="volvo-xs90-maintenance" class="service-page__item" style="display: block;">
-                            <h2>Техническое обслуживание</h2>
-                            <figure class="block-table">
-                                <table>
-                                    <thead>
-                                    <tr>
-                                        <th>Наименование услуги</th>
-                                        <th>Цена</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>Замена масла и масляного фильтра в двигателе</td>
-                                        <td>500 руб.</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Замена воздушного фильтра двигателя</td>
-                                        <td>100 руб.</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Замена топливного фильтра </td>
-                                        <td>200 руб.</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Замена фильтра салона*</td>
-                                        <td>300 руб.</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <figcaption><span>*</span> при его наличии в автомобиле</figcaption>
-                            </figure>
-                        </div>
-                        <div id="volvo-xs90-tireFitting" class="service-page__item">
-                            <h2>Шиномонтаж</h2>
-                            <figure class="block-table">
-                                <table>
-                                    <thead>
-                                    <tr>
-                                        <th>Наименование услуги</th>
-                                        <th>R12-R14</th>
-                                        <th>R15</th>
-                                        <th>R16</th>
-                                        <th>R17</th>
-                                        <th>R18</th>
-                                        <th>R19</th>
-                                        <th>R20-R23</th>
-                                        <th>от R26</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>Снятие и установка 1 колеса</td>
-                                        <td>500 руб.</td>
-                                        <td>500 руб.</td>
-                                        <td>500 руб.</td>
-                                        <td>500 руб.</td>
-                                        <td>500 руб.</td>
-                                        <td>500 руб.</td>
-                                        <td>500 руб.</td>
-                                        <td>500 руб.</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Монтаж/демонтаж 1 колеса</td>
-                                        <td>100 руб.</td>
-                                        <td>100 руб.</td>
-                                        <td>100 руб.</td>
-                                        <td>100 руб.</td>
-                                        <td>100 руб.</td>
-                                        <td>100 руб.</td>
-                                        <td>100 руб.</td>
-                                        <td>100 руб.</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Монтаж/демонтаж 1 колеса RunFlat</td>
-                                        <td>200 руб.</td>
-                                        <td>200 руб.</td>
-                                        <td>200 руб.</td>
-                                        <td>200 руб.</td>
-                                        <td>200 руб.</td>
-                                        <td>200 руб.</td>
-                                        <td>200 руб.</td>
-                                        <td>200 руб.</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Балансировка 1 колеса ( с учетом груза)</td>
-                                        <td>300 руб.</td>
-                                        <td>300 руб.</td>
-                                        <td>300 руб.</td>
-                                        <td>300 руб.</td>
-                                        <td>300 руб.</td>
-                                        <td>300 руб.</td>
-                                        <td>300 руб.</td>
-                                        <td>300 руб.</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <figcaption><span>*</span> при его наличии в автомобиле</figcaption>
-                            </figure>
-                        </div>
-                        -->
-                        
+                        <?php }} ?>
+                    <!-- Здесь выводим цены услуг КОНЕЦ -->
+                    
                     </div>
                     
                 </div>
