@@ -1,8 +1,8 @@
 <?php
 /**
- * Template Name: Шаблон страницы услуги
+ * Template Name: Шаблон страницы одной услуги
  * Template Post Type: page
- * Шаблон обычной страницы (page-service.php)
+ * Шаблон обычной страницы (page-servicesingle.php)
  * @package WordPress
  * @subpackage your-clean-template-3
  */
@@ -26,21 +26,21 @@ $page_url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER[
 $page_url = explode('?', $page_url);
 $page_url = $page_url[0];
 
-$car_mark_slug = isset($_GET['car_mark_slug']) ? $_GET['car_mark_slug'] : "" ;
-$car_mark_name = isset($_GET['car_mark_name']) ? $_GET['car_mark_name'] : "";
-$car_mark_term_id = isset($_GET['car_mark_term_id']) ? $_GET['car_mark_term_id'] : "" ;
+$url_string  = $_SERVER['REQUEST_URI'];
+$url_arr = explode('/', $url_string);
 
-$car_model_slug = isset($_GET['car_model_slug']) ? $_GET['car_model_slug'] : "" ;
-$car_model_name = isset($_GET['car_model_name']) ? $_GET['car_model_name'] : "";
-$car_model_term_id = isset($_GET['car_model_term_id']) ? $_GET['car_model_term_id'] : "" ;
+$post_id = isset($url_arr[2]) ? $url_arr[2] : "";
+$service_slug = isset($url_arr[3]) ? $url_arr[3] : "";
+$car_mark_slug = isset($url_arr[4]) ? $url_arr[4] : "";
+$car_model_slug = isset($url_arr[5]) ? $url_arr[5] : "";
 
-$service_slug = isset($_GET['service_slug']) ? $_GET['service_slug'] : "" ;
-$service_name = isset($_GET['service_name']) ? $_GET['service_name'] : "";
-$service_term_id = isset($_GET['service_term_id']) ? $_GET['service_term_id'] : "" ;
+$car_mark = isset($car_mark_slug) ? get_term_by('slug', $car_mark_slug, 'cars') : false;
+$car_model = isset($car_model_slug) ? get_term_by('slug', $car_model_slug, 'cars') : false;
 
-$services_terms = isset($_GET['services_terms']) ? $_GET['services_terms'] : array();
+$car_mark_name = isset($car_mark->name) ? $car_mark->name : "";
+$car_model_name = isset($car_model->name) ? $car_model->name : "";
 
-$page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : "";
+
 ?>
 <?php if($_SERVER['REQUEST_METHOD'] == 'POST'){ ?>
     <script>
@@ -223,286 +223,23 @@ $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING']
             
             <script>
                 $( document ).ready(function() {
-                    $("#car_model").hide();
-                    
-                    <?php if( !empty($car_mark_name) ){ ?>
-                        $("#car_model").show();
-                        $("#car_mark .filter-select__value span").text("<?php echo $car_mark_name; ?>");
-                    <?php } ?>
-                    
-                    <?php if( !empty($car_model_name) ){ ?>
-                        $("#car_model .filter-select__value span").text("<?php echo $car_model_name; ?>");
-                    <?php } ?>
-    
-                    <?php if( !empty($services_terms) ){ foreach($services_terms as $service_term_id){ ?>
-                        $("#<?php echo $service_term_id; ?>").addClass("_active");
-                    <?php }} ?>
+                
                 });
             </script>
             
-            <div class="service-page__filter filter">
-                <div class="filter__container container">
-                    <div class="filter__car">
-                        <div id="car_mark" class="filter__mark">
-                            <div class="filter__label filter__label--car">Марка автомобиля:</div>
-                            <?php
-                                $cars = get_terms([
-                                    'taxonomy' => 'cars',
-                                    'parent' => '0'
-                                ]);
-                                
-                                $cars_arr_letters = [];
-                                foreach ($cars as $car){
-                                    $first_letter = mb_strtoupper(mb_substr($car->name, 0, 1));
-                                    $cars_arr_letters[] = $first_letter;
-                                }
-                                $cars_arr_letters = array_unique($cars_arr_letters);
-                                sort($cars_arr_letters);
-                            ?>
-                            <div class="filter__select filter-select">
-                                <div class="filter-select__title">
-                                    <div class="filter-select__value">
-                                        <span>Выберите марку автомобиля</span>
-                                    </div>
-                                </div>
-                                <div class="filter-select__options">
-                                    <div class="filter-select__container container">
-                                        <div class="filter-select__row">
-                                            <?php foreach ($cars_arr_letters as $letter){ ?>
-                                                <div class="filter-select__item">
-                                                    <div class="filter-select__character"><?php echo $letter; ?></div>
-                                                    <div class="filter-select__links">
-                                                        <?php foreach ($cars as $car){ ?>
-                                                            <?php if ( $letter == mb_strtoupper(mb_substr($car->name, 0, 1)) ){ ?>
-                                                                <a href="?car_mark_slug=<?php echo $car->slug; ?>&car_mark_name=<?php echo $car->name; ?>&car_mark_term_id=<?php echo $car->term_id; ?>" class="car_mark filter-select__model" data-slug="<?php echo $car->slug; ?>" data-term_id="<?php echo $car->term_id; ?>" data-term_taxonomy_id="<?php echo $car->term_taxonomy_id; ?>" data-taxonomy="<?php echo $car->taxonomy; ?>"><?php echo $car->name; ?></a>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    </div>
-                                                </div>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="car_model" class="filter__mark">
-                            <div class="filter__label filter__label--p0">Модель автомобиля:</div>
-                            <div class="filter__select filter-select filter-select--model">
-                                <div class="filter-select__title">
-                                    <div class="filter-select__value">
-                                        <span>Выберите модель:</span>
-                                    </div>
-                                </div>
-                                <div class="filter-select__options">
-                                    <div class="filter-select__container container">
-                                        <div class="filter-select__row">
-                                            <!-- Здесь выводим дочерние модели -->
-                                              <?php if( isset($car_mark_term_id) and !empty($car_mark_term_id) ) {
-                                                  $cars = get_terms([
-                                                      'taxonomy' => 'cars',
-                                                      'parent' => $car_mark_term_id
-                                                  ]);
-                                                  if ($cars) {
-                                                      foreach ($cars as $car) { ?>
-                                                          <div class="filter-select__item"><a href="?car_mark_slug=<?php echo $car_mark_slug; ?>&car_mark_name=<?php echo $car_mark_name; ?>&car_mark_term_id=<?php echo $car_mark_term_id; ?>&car_model_slug=<?php echo $car->slug; ?>&car_model_name=<?php echo $car->name; ?>&car_model_term_id=<?php echo $car->term_id; ?>" data-slug="<?php echo $car->slug; ?>" data-term_id="<?php echo $car->term_id; ?>" data-term_taxonomy_id="<?php echo $car->term_taxonomy_id; ?>" data-taxonomy="<?php echo $car->taxonomy; ?>" data-car_parent="<?php echo $car_mark_term_id; ?>" class="car_model filter-select__model"><?php echo $car->name; ?></a></div>
-                                                      <?php }
-                                                  }
-                                              }
-                                              ?>
-                                            <!-- Здесь выводим дочерние модели КОНЕЦ -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="filter__service">
-                        <div class="filter__label filter__label--service">Выберите услугу:</div>
-                        <div class="filter__items">
-                            <!-- Здесь выводим родительские услуги -->
-                                <?php
-                                
-                                        $posts = get_posts( [
-                                            'tax_query' => [
-                                                [
-                                                    'taxonomy' => 'cars',
-                                                    'operator' => 'NOT EXISTS',
-                                                ]
-                                            ],
-                                            'post_type' => 'service_price',
-                                            'posts_per_page' => -1
-                                        ] );
-    
-                                        $object_ids = array();
-                                        foreach ($posts as $post){
-                                            $object_ids[] = $post->ID;
-                                        }
-    
-                                        $object_terms = wp_get_object_terms( $object_ids, 'services');
-
-                                        if($object_terms){
-                                            $parents = [];
-                                            foreach ($object_terms as $object_term){
-                                                $parents[] = $object_term->parent;
-                                            }
-                                            array_unique($parents);
-    
-                                            $services = get_terms([
-                                                'taxonomy' => 'services',
-                                                'parent' => '0',
-                                                'term_taxonomy_id' => $parents,
-                                            ]);
-                                            
-                                            
-                                            if($services){
-                                                foreach ($services as $service){
-                                                    parse_str($page_query_string, $page_query_arr);
-                                                    if(!isset($page_query_arr['services_terms']) or !in_array($service->term_id, $page_query_arr['services_terms'])) {
-                                                        $final_service_url = add_service_url($service, $page_query_arr);
-                                                        echo '<a id="'.$service->term_id.'" href="?'.$final_service_url.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
-                                                    }elseif (in_array($service->term_id, $page_query_arr['services_terms'])){
-                                                        $final_service_url = filter_service_url($service, $page_query_arr);
-                                                        echo '<a id="'.$service->term_id.'" href="?'.$final_service_url.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
-                                                    }
-                                                    else{
-                                                        echo '<a id="'.$service->term_id.'" href="'.$page_url.'#" onclick="history.back();" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">Ошибка!</div></a>';
-                                                    }
-                                                    
-                                                }
-                                            }
-                                            
-                                            
-                                        }
-
-                                if(!empty($car_model_term_id)) {
-    
-                                    $query = new WP_Query(array(
-                                        'tax_query' => array(
-                                            array(
-                                                'taxonomy' => 'cars',
-                                                'field' => 'term_id',
-                                                'terms' => $car_model_term_id
-                                            )
-                                        )
-                                    ));
-    
-                                    $object_ids = array();
-                                    foreach ($query->posts as $post) {
-                                        $object_ids[] = $post->ID;
-                                    }
-    
-                                    $object_terms = wp_get_object_terms($object_ids, 'services');
-    
-                                    if ($object_terms) {
-                                        $parents = [];
-                                        foreach ($object_terms as $object_term) {
-                                            $parents[] = $object_term->parent;
-                                        }
-                                        array_unique($parents);
-        
-                                        $services = get_terms([
-                                            'taxonomy' => 'services',
-                                            'parent' => '0',
-                                            'term_taxonomy_id' => $parents,
-                                        ]);
-    
-                                        if($services){
-                                            foreach ($services as $service){
-                                                parse_str($page_query_string, $page_query_arr);
-                                                if(!isset($page_query_arr['services_terms']) or !in_array($service->term_id, $page_query_arr['services_terms'])) {
-                                                    $final_service_url = add_service_url($service, $page_query_arr);
-                                                    echo '<a id="'.$service->term_id.'" href="?'.$final_service_url.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
-                                                }elseif (in_array($service->term_id, $page_query_arr['services_terms'])){
-                                                    $final_service_url = filter_service_url($service, $page_query_arr);
-                                                    echo '<a id="'.$service->term_id.'" href="?'.$final_service_url.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
-                                                }
-                                                else{
-                                                    echo '<a id="'.$service->term_id.'" href="'.$page_url.'#" onclick="history.back();" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">Ошибка!</div></a>';
-                                                }
-            
-                                            }
-                                        }
-                                    }
-                                }
-                                        
-                                
-                                ?>
-                            <!-- Здесь выводим родительские услуги КОНЕЦ -->
-                        </div>
-                        <div class="filter__buttons">
-                            <a href="" id="filterAll" class="filter__btn filter__all">Все услуги</a>
-                            
-                            <a href="<?php echo $page_url; ?>" class="filter__btn filter__reset_link">Сбросить фильтры</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="service-page__content">
                 <div class="container">
                     <div class="service-page__items">
                     
                     <!-- Здесь выводим цены услуг -->
                         <?php
-                        
-                            if(!empty($services_terms)){
-                                if(!empty($car_model_term_id)){
-                                    //Получим услуги по выбранной модели авто
-                                    $services_posts = get_posts( [
-                                        'tax_query' => [
-                                            [
-                                                'taxonomy' => 'cars',
-                                                'field'    => 'term_id',
-                                                'field'    => 'term_id',
-                                                'terms'    => $car_model_term_id
-                                            ]
-                                        ],
-                                        'post_type' => 'service_price',
-                                        'posts_per_page' => -1
-                                    ] );
-            
-                                    $object_terms = array();
-                                    $services_posts_ids = array();
-                                    foreach ($services_posts as $service_post){
-                                        $terms = wp_get_object_terms($service_post->ID, 'services');
-                                        foreach ($terms as $term){
-                                            if($term->parent != 0 and in_array($term->parent, $services_terms)){
-                                                $term->post_id = $service_post->ID;
-                                                $term->price = get_field('price', $service_post->ID);
-                                                $term->notation = get_field('notation', $service_post->ID);
-                                                $show_terms[$term->parent][] = $term;
-                                            }
-                                        }
-                                    }
-                                }
-        
-                                //Получим услуги по пустой модели авто
-                                $services_posts = get_posts( [
-                                    'tax_query' => [
-                                        [
-                                            'taxonomy' => 'cars',
-                                            'operator' => 'NOT EXISTS',
-                                        ]
-                                    ],
-                                    'post_type' => 'service_price',
-                                    'posts_per_page' => -1
-                                ] );
-        
-                                $object_terms = array();
-                                $services_posts_ids = array();
-                                foreach ($services_posts as $service_post){
-                                    $services_posts_ids[] = $service_post->ID;
-                                    $terms = wp_get_object_terms($service_post->ID, 'services');
-                                    foreach ($terms as $term){
-                                        if($term->parent != 0 and in_array($term->parent, $services_terms)){
-                                            $term->post_id = $service_post->ID;
-                                            $term->price = get_field('price', $service_post->ID);
-                                            $term->notation = get_field('notation', $service_post->ID);
-                                            $show_terms[$term->parent][] = $term;
-                                        }
-                                    }
+                            $post = get_post($post_id);
+                            $price = get_field('price', $post->ID);
+                            $notation = get_field('notation', $post->ID);
+                            $terms = wp_get_object_terms($post->ID, 'services');
+                            foreach ($terms as $term){
+                                if($term->slug == $service_slug){
+                                    $show_terms[$term->parent][] = $term;
                                 }
                             }
                             
@@ -512,7 +249,7 @@ $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING']
                             $parent_term = get_term($parent_term_id, 'services');
                             ?>
                             <div id="<?php echo $parent_term_id; ?>" class="service-page__item" style="display: block;">
-                                <h2><?php echo $parent_term->name; ?></h2>
+                                <h2><?php echo $parent_term->name; ?> <?php echo $car_mark_name; ?> <?php echo $car_model_name; ?></h2>
                                 <figure class="block-table">
                                     <table>
                                         <thead>
@@ -523,23 +260,11 @@ $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING']
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ($terms as $term){
-                                                
-                                                $service_url = "/service/";
-                                                $service_url .= $term->post_id."/";
-                                                $service_url .= $term->slug."/";
-                                                
-                                                $service_url .= !empty($car_mark_slug) ? $car_mark_slug."/" : "";
-                                                //$service_url .= !empty($car_mark_term_id) ? $car_mark_term_id."/" : "";
-    
-                                                $service_url .= !empty($car_model_slug) ? $car_model_slug."/" : "";
-                                                //$service_url .= !empty($car_model_term_id) ? $car_model_term_id."/" : "";
-                                                
-                                                ?>
+                                            <?php foreach ($terms as $term){ ?>
                                                 <tr>
-                                                    <td><a href="<?php echo $service_url; ?>" target="_blank"><?php echo $term->name; ?></a></td>
-                                                    <td><?php echo $term->price; ?> руб.</td>
-                                                    <td><?php echo $term->notation; ?></td>
+                                                    <td><?php echo $term->name; ?> <?php echo $car_mark_name; ?> <?php echo $car_model_name; ?></td>
+                                                    <td><?php echo $price; ?> руб.</td>
+                                                    <td><?php echo $notation; ?></td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>
@@ -610,32 +335,11 @@ $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING']
 
             <div class="container">
                 <?php
-                if(!empty($car_mark_term_id) and empty($car_model_term_id)){
-                   $auto_repair_text = get_field('auto_repair_text', 'cars_'.$car_mark_term_id);
-                   $auto_repair_text = empty($auto_repair_text) ? get_field('field_60193e4c516b8') : $auto_repair_text;
-                   $auto_repair_text = str_replace('{{mark}}', $car_mark_name, $auto_repair_text);
-                   $auto_repair_text = !empty($car_model_name) ? str_replace('{{model}}', ' '.$car_model_name, $auto_repair_text) : str_replace('{{model}}', '', $auto_repair_text);
-                   echo $auto_repair_text;
-                }else if(!empty($car_model_term_id)){
-                    $auto_repair_text = get_field('auto_repair_text', 'cars_'.$car_model_term_id);
-                    $auto_repair_text = empty($auto_repair_text) ? get_field('field_60193e4c516b8') : $auto_repair_text;
-                    $auto_repair_text = str_replace('{{mark}}', $car_mark_name, $auto_repair_text);
-                    $auto_repair_text = !empty($car_model_name) ? str_replace('{{model}}', ' '.$car_model_name, $auto_repair_text) : str_replace('{{model}}', '', $auto_repair_text);
-                    echo $auto_repair_text;
-                }else if(count($services_terms)==1){
-                    foreach ($services_posts_ids as $post_id){
-                        $content = get_the_content( NULL, false, $post_id);
-                        if($content and strlen($content)>5){
-                            //$content = str_replace('{{mark}}', $car_mark_name, $content);
-                            //$content = !empty($car_model_name) ? str_replace('{{model}}', ' '.$car_model_name, $content) : str_replace('{{model}}', '', $content);
-                            echo $content;
-                            break;
-                        }
+                    if($post){
+                        $post_content = $post->post_content;
+                        $post_content = !empty($car_mark_name) ? str_replace('{{mark}}', $car_mark_name, $post_content) : str_replace('{{mark}}', '', $post_content);
+                        $post_content = !empty($car_model_name) ? str_replace('{{model}}', ' '.$car_model_name, $post_content) : str_replace('{{model}}', '', $post_content);
                     }
-                }
-                else{
-                    echo get_the_content( NULL, false, $page_id );
-                }
                 ?>
             </div>
             
