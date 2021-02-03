@@ -6189,6 +6189,10 @@ textarea.form__input {
   }
 }
 
+.service-page__item h2{
+  margin-bottom:0 !important;
+}
+
 .webp .header { background: url(../img/menu-bg.webp) no-repeat center/cover; }
 
 .webp .schedule::before { background: url(../img/schedule/bg-1.webp) no-repeat center/cover; }
