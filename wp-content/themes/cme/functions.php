@@ -75,6 +75,8 @@ register_sidebar(array( // регистрируем левую колонку, �
 ));
 
 
+
+
 if (!class_exists('clean_comments_constructor')) {
 	class clean_comments_constructor extends Walker_Comment {
 		public function start_lvl( &$output, $depth = 0, $args = array()) {

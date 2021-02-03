@@ -6,6 +6,47 @@
  * @package WordPress
  * @subpackage your-clean-template-3
  */
+
+$page_url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+$page_url = explode('?', $page_url);
+$page_url = $page_url[0];
+
+$url_string  = $_SERVER['REQUEST_URI'];
+$url_arr = explode('/', $url_string);
+
+$post_id = isset($url_arr[2]) ? $url_arr[2] : "";
+$service_slug = isset($url_arr[3]) ? $url_arr[3] : "";
+$car_mark_slug = isset($url_arr[4]) ? $url_arr[4] : "";
+$car_model_slug = isset($url_arr[5]) ? $url_arr[5] : "";
+
+$service = isset($service_slug) ? get_term_by('slug', $service_slug, 'services') : false;
+$service_name = $service->name;
+
+$parent_id = $service->parent;
+$parent = isset($parent_id) ? get_term_by('term_id', $parent_id, 'services') : false;
+$parent_name = $parent->name;
+
+$car_mark = isset($car_mark_slug) ? get_term_by('slug', $car_mark_slug, 'cars') : false;
+$car_model = isset($car_model_slug) ? get_term_by('slug', $car_model_slug, 'cars') : false;
+
+$car_mark_name = isset($car_mark->name) ? $car_mark->name : "";
+$car_model_name = isset($car_model->name) ? $car_model->name : "";
+
+$full_title = $parent_name.' - '.$service->name.' на '.$car_mark_name.' '.$car_model_name;
+
+//Изменить title
+add_filter( 'document_title_parts', 'filter_function_service' );
+function filter_function_service( $title ){
+    global $car_mark_name;
+    global $car_model_name;
+    global $service;
+    global $parent_name;
+    if( is_page('service') )
+        $title['title'] = $parent_name.' - '.$service->name.' на '.$car_mark_name.' '.$car_model_name;
+    
+    return $title;
+}
+
 get_header(); ?>
 <?php
 $page_id = get_the_ID();
@@ -21,25 +62,6 @@ function add_service_url($service, $page_query_arr){
     //$page_query_arr['services_terms_names'][] = $service->name;
     return http_build_query($page_query_arr);
 }
-
-$page_url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-$page_url = explode('?', $page_url);
-$page_url = $page_url[0];
-
-$url_string  = $_SERVER['REQUEST_URI'];
-$url_arr = explode('/', $url_string);
-
-$post_id = isset($url_arr[2]) ? $url_arr[2] : "";
-$service_slug = isset($url_arr[3]) ? $url_arr[3] : "";
-$car_mark_slug = isset($url_arr[4]) ? $url_arr[4] : "";
-$car_model_slug = isset($url_arr[5]) ? $url_arr[5] : "";
-
-$car_mark = isset($car_mark_slug) ? get_term_by('slug', $car_mark_slug, 'cars') : false;
-$car_model = isset($car_model_slug) ? get_term_by('slug', $car_model_slug, 'cars') : false;
-
-$car_mark_name = isset($car_mark->name) ? $car_mark->name : "";
-$car_model_name = isset($car_model->name) ? $car_model->name : "";
-
 
 ?>
 <?php if($_SERVER['REQUEST_METHOD'] == 'POST'){ ?>
@@ -215,9 +237,9 @@ $car_model_name = isset($car_model->name) ? $car_model->name : "";
                     <div class="breadcrumbs__items">
                         <div class="breadcrumbs__item"><a href="/" class="breadcrumbs__link">Главная</a></div>
                         <span>&nbsp;\&nbsp;</span>
-                        <?php the_breadcrumb(); ?>
+                        <div class="breadcrumbs__item"><?php echo $full_title; ?></div>
                     </div>
-                    <h1 class="breadcrumbs__title"><?php the_title(); ?></h1>
+                    <h1 class="breadcrumbs__title"><?php echo $parent_name; ?></h1>
                 </div>
             </div>
             
@@ -249,7 +271,7 @@ $car_model_name = isset($car_model->name) ? $car_model->name : "";
                             $parent_term = get_term($parent_term_id, 'services');
                             ?>
                             <div id="<?php echo $parent_term_id; ?>" class="service-page__item" style="display: block;">
-                                <h2><?php echo $parent_term->name; ?> <?php echo $car_mark_name; ?> <?php echo $car_model_name; ?></h2>
+                                <h2><?php echo $service_name; ?> на <?php echo $car_mark_name; ?> <?php echo $car_model_name; ?></h2>
                                 <figure class="block-table">
                                     <table>
                                         <thead>
@@ -262,7 +284,7 @@ $car_model_name = isset($car_model->name) ? $car_model->name : "";
                                         <tbody>
                                             <?php foreach ($terms as $term){ ?>
                                                 <tr>
-                                                    <td><?php echo $term->name; ?> <?php echo $car_mark_name; ?> <?php echo $car_model_name; ?></td>
+                                                    <td><?php echo $term->name; ?> на <?php echo $car_mark_name; ?> <?php echo $car_model_name; ?></td>
                                                     <td><?php echo $price; ?> руб.</td>
                                                     <td><?php echo $notation; ?></td>
                                                 </tr>
