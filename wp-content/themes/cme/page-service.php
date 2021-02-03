@@ -20,10 +20,6 @@ function add_service_url($service, $page_query_arr){
     return http_build_query($page_query_arr);
 }
 
-//echo '<pre>';
-   // var_dump($_SERVER['HTTP_REFERER']);
-//echo '</pre>';
-
 $page_url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 $page_url = explode('?', $page_url);
 $page_url = $page_url[0];
@@ -43,7 +39,6 @@ $service_term_id = isset($_GET['service_term_id']) ? $_GET['service_term_id'] : 
 $services_terms = isset($_GET['services_terms']) ? $_GET['services_terms'] : array();
 
 $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : "";
-
 ?>
 <?php if($_SERVER['REQUEST_METHOD'] == 'POST'){ ?>
     <script>
@@ -239,9 +234,9 @@ $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING']
                         $("#car_model .filter-select__value span").text("<?php echo $car_model_name; ?>");
                     <?php } ?>
     
-                    <?php if( !empty($service_term_id) ){ ?>
+                    <?php if( !empty($services_terms) ){ foreach($services_terms as $service_term_id){ ?>
                         $("#<?php echo $service_term_id; ?>").addClass("_active");
-                    <?php } ?>
+                    <?php }} ?>
                 });
             </script>
             
@@ -450,6 +445,71 @@ $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING']
                     <div class="service-page__items">
                         
                         <!-- Здесь выводим цены услуг -->
+                        
+                        <?php
+                        
+                        if(!empty($car_model_term_id)){
+                            
+                            //Получим услуги по выбранной модели авто
+                            $services_posts = get_posts( [
+                                'tax_query' => [
+                                    [
+                                        'taxonomy' => 'cars',
+                                        'field'    => 'term_id',
+                                        'field'    => 'term_id',
+                                        'terms'    => $car_model_term_id
+                                    ]
+                                ],
+                                'post_type' => 'service_price',
+                                'posts_per_page' => -1
+                            ] );
+                            
+                            $services_posts_ids = array();
+                            foreach ($services_posts as $service_post){
+                                $services_posts_ids[] = $service_post->ID;
+                            }
+                            $object_terms = wp_get_object_terms( $services_posts_ids, 'services');
+                            
+                            $show_terms = array();
+                            foreach ($object_terms as $term){
+                                if($term->parent != 0 and in_array($term->parent, $services_terms)){
+                                    $show_terms[] = $term;
+                                }
+                            }
+    
+    
+                            //Получим услуги по пустой модели авто
+                            $posts = get_posts( [
+                                'tax_query' => [
+                                    [
+                                        'taxonomy' => 'cars',
+                                        'operator' => 'NOT EXISTS',
+                                    ]
+                                ],
+                                'post_type' => 'service_price',
+                                'posts_per_page' => -1
+                            ] );
+    
+                            $object_ids = array();
+                            foreach ($posts as $post){
+                                $object_ids[] = $post->ID;
+                            }
+                            
+                        $object_terms = wp_get_object_terms($object_ids, 'services');
+                        if($object_terms) {
+                            foreach ($object_terms as $term){
+                                if($term->parent != 0 and in_array($term->parent, $services_terms)){
+                                    $show_terms[] = $term;
+                                }
+                            }
+                        }
+                        
+                            echo '<pre>';
+                            var_dump($show_terms);
+                            echo '</pre>';
+                            
+                        }
+                        ?>
                         
                         <!--
                         <div id="volvo-xs90-diagnostics" class="service-page__item" style="display: block;">
