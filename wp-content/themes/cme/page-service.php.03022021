@@ -465,24 +465,22 @@ $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING']
                                 'post_type' => 'service_price',
                                 'posts_per_page' => -1
                             ] );
-    
-                            $object_terms = array();
+                            
                             $services_posts_ids = array();
                             foreach ($services_posts as $service_post){
-                                $terms = wp_get_object_terms($service_post->ID, 'services');
-                                foreach ($terms as $term){
-                                    if($term->parent != 0 and in_array($term->parent, $services_terms)){
-                                        $term->post_id = $service_post->ID;
-                                        $term->price = get_field('price', $service_post->ID);
-                                        $term->notation = get_field('notation', $service_post->ID);
-                                        $show_terms[$term->parent][] = $term;
-                                    }
+                                $services_posts_ids[] = $service_post->ID;
+                            }
+                            $object_terms = wp_get_object_terms( $services_posts_ids, 'services');
+                            $show_terms = array();
+                            foreach ($object_terms as $term){
+                                if($term->parent != 0 and in_array($term->parent, $services_terms)){
+                                    $show_terms[$term->parent][] = $term;
                                 }
                             }
-                            //die();
+    
     
                             //Получим услуги по пустой модели авто
-                            $services_posts = get_posts( [
+                            $posts = get_posts( [
                                 'tax_query' => [
                                     [
                                         'taxonomy' => 'cars',
@@ -493,20 +491,19 @@ $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING']
                                 'posts_per_page' => -1
                             ] );
     
-                            $object_terms = array();
-                            $services_posts_ids = array();
-                            foreach ($services_posts as $service_post){
-                                $terms = wp_get_object_terms($service_post->ID, 'services');
-                                foreach ($terms as $term){
+                            $object_ids = array();
+                            foreach ($posts as $post){
+                                $object_ids[] = $post->ID;
+                            }
+                            
+                            $object_terms = wp_get_object_terms($object_ids, 'services');
+                            if($object_terms) {
+                                foreach ($object_terms as $term){
                                     if($term->parent != 0 and in_array($term->parent, $services_terms)){
-                                        $term->post_id = $service_post->ID;
-                                        $term->price = get_field('price', $service_post->ID);
-                                        $term->notation = get_field('notation', $service_post->ID);
                                         $show_terms[$term->parent][] = $term;
                                     }
                                 }
                             }
-                            
                         }
                         ?>
 
@@ -521,15 +518,13 @@ $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING']
                                             <tr>
                                                 <th>Наименование услуги</th>
                                                 <th>Цена</th>
-                                                <th>Примечание</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($terms as $term){ ?>
                                                 <tr>
                                                     <td><?php echo $term->name; ?></td>
-                                                    <td><?php echo $term->price; ?> руб.</td>
-                                                    <td><?php echo $term->notation; ?></td>
+                                                    <td>500 руб.</td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>
