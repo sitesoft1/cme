@@ -333,12 +333,14 @@ $car_model_name = isset($car_model->name) ? $car_model->name : "";
                 </div>
             </div>
 
-            <div class="container">
+            <div style="margin-bottom: 14px; margin-top: 14px" class="container">
                 <?php
                     if($post){
                         $post_content = $post->post_content;
                         $post_content = !empty($car_mark_name) ? str_replace('{{mark}}', $car_mark_name, $post_content) : str_replace('{{mark}}', '', $post_content);
                         $post_content = !empty($car_model_name) ? str_replace('{{model}}', ' '.$car_model_name, $post_content) : str_replace('{{model}}', '', $post_content);
+                        
+                        echo $post_content;
                     }
                 ?>
             </div>
