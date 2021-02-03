@@ -11,7 +11,7 @@ get_header(); ?>
 $page_id = get_the_ID();
 
 //echo '<pre>';
-    //var_dump($_GET['services_terms']);
+   // var_dump($_SERVER['HTTP_REFERER']);
 //echo '</pre>';
 
 $page_url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
@@ -30,9 +30,10 @@ $service_slug = isset($_GET['service_slug']) ? $_GET['service_slug'] : "" ;
 $service_name = isset($_GET['service_name']) ? $_GET['service_name'] : "";
 $service_term_id = isset($_GET['service_term_id']) ? $_GET['service_term_id'] : "" ;
 
-$services_terms = isset($_GET['services_terms']) ? $_GET['services_terms'] : array() ;
+$services_terms = isset($_GET['services_terms']) ? $_GET['services_terms'] : array();
 
 $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : "";
+
 ?>
 <?php if($_SERVER['REQUEST_METHOD'] == 'POST'){ ?>
     <script>
@@ -348,18 +349,28 @@ $page_query_string = !empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING']
                                                 'parent' => '0',
                                                 'term_taxonomy_id' => $parents,
                                             ]);
+                                            
+                                            function filter_service_url($service, $page_query_arr){
+                                                unset($page_query_arr['services_terms'][array_search($service->term_id, $page_query_arr['services_terms'])]);
+                                                return http_build_query($page_query_arr);
+                                            }
     
                                             if($services){
-                                                parse_str($page_query_string, $page_query_arr);
                                                 foreach ($services as $service){
+                                                    parse_str($page_query_string, $page_query_arr);
+                                                    
                                                     if(!isset($page_query_arr['services_terms']) or !in_array($service->term_id, $page_query_arr['services_terms'])) {
                                                         $page_query_arr['services_terms'][] = $service->term_id;
                                                         $final_service_url = http_build_query($page_query_arr);
                                                         unset($page_query_arr['services_terms'][array_search($service->term_id, $page_query_arr['services_terms'])]);
                                                         echo '<a id="'.$service->term_id.'" href="?'.$final_service_url.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
+                                                    }elseif (in_array($service->term_id, $page_query_arr['services_terms'])){
+                                                        $final_service_url = filter_service_url($service, $page_query_arr);
+                                                        echo '<a id="'.$service->term_id.'" href="?'.$final_service_url.'" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
                                                     }
                                                     else{
-                                                        echo '<a id="'.$service->term_id.'" href="'.$page_url.'#" onclick="history.back();" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
+                                                        echo '<a id="'.$service->term_id.'" href="'.$page_url.'#" onclick="history.back();" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">ЕРУНДА</div></a>';
+                                                        //echo '<a id="'.$service->term_id.'" href="'.$page_url.'#" onclick="history.back();" class="filter__item2" data-show="2" data-slug="'.$service->slug.'" data-term_id="'.$service->term_id.'" data-term_taxonomy_id="'.$service->term_taxonomy_id.'" data-taxonomy="'.$service->taxonomy.'" data-car_model="'.$car_model_term_id.'" data-car_parent="'.$car_mark_term_id.'" data-name="'.$service->name.'"><div class="filter__item-wrapper">'.$service->name.'</div></a>';
                                                     }
                                                     
                                                 }
