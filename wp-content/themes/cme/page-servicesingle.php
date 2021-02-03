@@ -32,7 +32,7 @@ $car_model = isset($car_model_slug) ? get_term_by('slug', $car_model_slug, 'cars
 $car_mark_name = isset($car_mark->name) ? $car_mark->name : "";
 $car_model_name = isset($car_model->name) ? $car_model->name : "";
 
-$full_title = $parent_name.' - '.$service->name.' на '.$car_mark_name.' '.$car_model_name;
+$full_title = $parent_name.' - '.$service->name.' '.$car_mark_name.' '.$car_model_name;
 
 //Изменить title
 add_filter( 'document_title_parts', 'filter_function_service' );
@@ -42,7 +42,7 @@ function filter_function_service( $title ){
     global $service;
     global $parent_name;
     if( is_page('service') )
-        $title['title'] = $parent_name.' - '.$service->name.' на '.$car_mark_name.' '.$car_model_name;
+        $title['title'] = $parent_name.' - '.$service->name.' '.$car_mark_name.' '.$car_model_name;
     
     return $title;
 }
@@ -271,7 +271,7 @@ function add_service_url($service, $page_query_arr){
                             $parent_term = get_term($parent_term_id, 'services');
                             ?>
                             <div id="<?php echo $parent_term_id; ?>" class="service-page__item" style="display: block;">
-                                <h2><?php echo $service_name; ?> на <?php echo $car_mark_name; ?> <?php echo $car_model_name; ?></h2>
+                                <h2><?php echo $service_name; ?> <?php echo $car_mark_name; ?> <?php echo $car_model_name; ?></h2>
                                 <figure class="block-table">
                                     <table>
                                         <thead>
@@ -284,7 +284,7 @@ function add_service_url($service, $page_query_arr){
                                         <tbody>
                                             <?php foreach ($terms as $term){ ?>
                                                 <tr>
-                                                    <td><?php echo $term->name; ?> на <?php echo $car_mark_name; ?> <?php echo $car_model_name; ?></td>
+                                                    <td><?php echo $term->name; ?> <?php echo $car_mark_name; ?> <?php echo $car_model_name; ?></td>
                                                     <td><?php echo $price; ?> руб.</td>
                                                     <td><?php echo $notation; ?></td>
                                                 </tr>
